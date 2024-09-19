@@ -1,0 +1,15 @@
+movement:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: vna27887.us-east-1
+      role: INTERNAL_DEV
+      user: mike.stepanovic@flipsidecrypto.com
+      authenticator: externalbrowser
+      region: us-east-1
+      database: MOVEMENT_DEV
+      warehouse: DBT
+      schema: SILVER
+      threads: 4
+      client_session_keep_alive: False
