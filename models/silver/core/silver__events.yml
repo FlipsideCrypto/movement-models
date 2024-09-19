@@ -1,0 +1,23 @@
+version: 2
+models:
+  - name: silver__events
+
+    columns:
+      - name: BLOCK_NUMBER
+      - name: BLOCK_TIMESTAMP
+      - name: TX_HASH
+      - name: VERSION
+      - name: SUCCESS
+      - name: TX_TYPE
+      - name: EVENT_INDEX
+      - name: EVENT_TYPE
+      - name: EVENT_ADDRESS
+      - name: EVENT_MODULE
+      - name: EVENT_RESOURCE   
+      - name: EVENT_DATA
+      - name: ACCOUNT_ADDRESS
+      - name: CREATION_NUMBER
+      - name: SEQUENCE_NUMBER
+      - name: EVENTS_ID
+      - name: INSERTED_TIMESTAMP
+      - name: MODIFIED_TIMESTAMP
