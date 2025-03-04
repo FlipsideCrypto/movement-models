@@ -1,26 +1,34 @@
 version: 2
 models:
   - name: silver__changes
-          
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "b.value:type IS NOT NULL"
+          where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+      - dbt_utils.expression_is_true:
+          expression: "b.value:data: 'type' IS NOT NULL"
+          where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
     columns:
       - name: block_number
-      - name: BLOCK_TIMESTAMP
-      - name: TX_HASH
-      - name: VERSION
-      - name: SUCCESS
-      - name: TX_TYPE
-      - name: CHANGE_INDEX
-      - name: CHANGE_DATA
-      - name: CHANGE_TYPE
-      - name: ADDRESS
-      - name: HANDLE
-      - name: INNER_CHANGE_TYPE      
-      - name: CHANGE_ADDRESS
-      - name: CHANGE_MODULE
-      - name: CHANGE_RESOURCE
-      - name: KEY
-      - name: VALUE
-      - name: STATE_KEY_HASH
-      - name: CHANGES_ID
-      - name: INSERTED_TIMESTAMP
-      - name: MODIFIED_TIMESTAMP
+      - name: block_timestamp
+      - name: tx_hash
+      - name: version
+      - name: success
+      - name: tx_type
+      - name: payload_function
+      - name: change_index
+      - name: change_data
+      - name: change_type
+      - name: address
+      - name: handle
+      - name: inner_change_type
+      - name: change_address
+      - name: change_module
+      - name: change_resource
+      - name: key
+      - name: value
+      - name: state_key_hash
+      - name: changes_id
+      - name: inserted_timestamp
+      - name: modified_timestamp
+      - name: _invocation_id

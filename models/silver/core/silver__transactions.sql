@@ -86,15 +86,58 @@ combo AS (
     file_last_updated
   FROM
     from_transactions A
+),
+transformed AS (
+  SELECT
+    COALESCE(
+      block_timestamp,
+      '1970-01-01 00:00:00.000'
+    ) AS block_timestamp,
+    tx_hash,
+    version,
+    tx_type,
+    DATA :success :: BOOLEAN AS success,
+    DATA :sender :: STRING AS sender,
+    DATA :signature :: STRING AS signature,
+    DATA :payload AS payload,
+    DATA :payload :function :: STRING AS payload_function,
+    DATA :changes AS changes,
+    DATA :events AS events,
+    DATA :gas_unit_price :: bigint AS gas_unit_price,
+    DATA :gas_used :: INT AS gas_used,
+    DATA :max_gas_amount :: bigint AS max_gas_amount,
+    DATA :expiration_timestamp_secs :: bigint AS expiration_timestamp_secs,
+    DATA :vm_status :: STRING AS vm_status,
+    DATA :state_change_hash :: STRING AS state_change_hash,
+    DATA :accumulator_root_hash :: STRING AS accumulator_root_hash,
+    DATA :event_root_hash :: STRING AS event_root_hash,
+    DATA :state_checkpoint_hash :: STRING AS state_checkpoint_hash,
+    DATA,
+    file_last_updated
+  FROM
+    combo
 )
 SELECT
-  COALESCE(
-    block_timestamp,
-    '1970-01-01 00:00:00.000'
-  ) AS block_timestamp,
+  block_timestamp,
   tx_hash,
   version,
   tx_type,
+  success,
+  sender,
+  signature,
+  payload,
+  payload_function,
+  changes,
+  events,
+  gas_unit_price,
+  gas_used,
+  max_gas_amount,
+  expiration_timestamp_secs,
+  vm_status,
+  state_change_hash,
+  accumulator_root_hash,
+  event_root_hash,
+  state_checkpoint_hash,
   DATA,
   {{ dbt_utils.generate_surrogate_key(
     ['tx_hash']
@@ -103,6 +146,6 @@ SELECT
   SYSDATE() AS modified_timestamp,
   '{{ invocation_id }}' AS _invocation_id
 FROM
-  combo qualify(ROW_NUMBER() over (PARTITION BY tx_hash
+  transformed qualify(ROW_NUMBER() over (PARTITION BY tx_hash
 ORDER BY
   file_last_updated DESC)) = 1

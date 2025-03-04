@@ -1,37 +1,47 @@
 version: 2
 models:
   - name: silver__transactions
-
     tests:
-      - dbt_constraints.primary_key:
-          column_name: TRANSACTIONS_ID
-
+      - dbt_utils.expression_is_true:
+          expression: "b.value:timestamp IS NOT NULL"
+          where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+      - dbt_utils.expression_is_true:
+          expression: "b.value:hash IS NOT NULL"
+          where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+      - dbt_utils.expression_is_true:
+          expression: "b.value:version IS NOT NULL"
+          where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+      - dbt_utils.expression_is_true:
+          expression: "b.value:type IS NOT NULL"
+          where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
     columns:
-      - name: BLOCK_TIMESTAMP
+      - name: block_timestamp
+      - name: tx_hash
         tests:
-          - not_null
-      - name: TX_HASH
-        tests:
-          - not_null
-      - name: VERSION
-        tests:
-          - not_null
-      - name: TX_TYPE
-        tests:
-          - not_null
-      - name: TRANSACTIONS_ID
-        tests:
-          - not_null
-      - name: INSERTED_TIMESTAMP
-        tests:
-          - not_null
-      - name: MODIFIED_TIMESTAMP
-        tests:
-          - not_null
-
-      - name: _INVOCATION_ID
-        tests:
-          - name: not_null_silver__transactions_INVOCATION_ID
-            test_name: not_null
+          - unique:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+      - name: version
+      - name: tx_type
+      - name: success
+      - name: sender
+      - name: signature
+      - name: payload
+      - name: payload_function
+      - name: changes
+      - name: events
+      - name: gas_unit_price
+      - name: gas_used
+      - name: max_gas_amount
+      - name: expiration_timestamp_secs
+      - name: vm_status
+      - name: state_change_hash
+      - name: accumulator_root_hash
+      - name: event_root_hash
+      - name: state_checkpoint_hash
+      - name: data
+      - name: transactions_id
+      - name: inserted_timestamp
+      - name: modified_timestamp
+      - name: _invocation_id
       

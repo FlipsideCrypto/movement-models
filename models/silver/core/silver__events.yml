@@ -1,23 +1,31 @@
 version: 2
 models:
   - name: silver__events
-
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "b.value:type IS NOT NULL"
+          where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+      - dbt_utils.expression_is_true:
+          expression: "b.value:guid:account_address IS NOT NULL AND b.value:guid:creation_number IS NOT NULL"
+          where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
     columns:
       - name: block_number
-      - name: BLOCK_TIMESTAMP
-      - name: TX_HASH
-      - name: VERSION
-      - name: SUCCESS
-      - name: TX_TYPE
-      - name: EVENT_INDEX
-      - name: EVENT_TYPE
-      - name: EVENT_ADDRESS
-      - name: EVENT_MODULE
-      - name: EVENT_RESOURCE   
-      - name: EVENT_DATA
-      - name: ACCOUNT_ADDRESS
-      - name: CREATION_NUMBER
-      - name: SEQUENCE_NUMBER
-      - name: EVENTS_ID
-      - name: INSERTED_TIMESTAMP
-      - name: MODIFIED_TIMESTAMP
+      - name: block_timestamp
+      - name: tx_hash
+      - name: version
+      - name: success
+      - name: tx_type
+      - name: payload_function
+      - name: event_index
+      - name: event_type
+      - name: event_address
+      - name: event_module
+      - name: event_resource
+      - name: event_data
+      - name: account_address
+      - name: creation_number
+      - name: sequence_number
+      - name: events_id
+      - name: inserted_timestamp
+      - name: modified_timestamp
+      - name: _invocation_id
