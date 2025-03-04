@@ -2,10 +2,10 @@
     materialized = 'incremental',
     unique_key = ['tx_hash','change_index'],
     incremental_strategy = 'merge',
-    incremental_predicates = ["dynamic_range_predicate", "block_timestamp::DATE"],
+    incremental_predicates = ["dynamic_range_predicate","block_timestamp::DATE"],    
     merge_exclude_columns = ["inserted_timestamp"],
     cluster_by = ['block_timestamp::DATE','modified_timestamp::DATE'],
-    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(version,tx_hash, change_type,inner_change_type,change_address,change_module,change_resource,payload_function);",
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(version,tx_hash,change_type,inner_change_type,change_address,change_module,change_resource,payload_function);",
     tags = ['core','full_test']
 ) }}
 
@@ -29,9 +29,10 @@ SELECT
     key,
     VALUE,
     state_key_hash,
-    changes_id AS fact_changes_id,
-    inserted_timestamp,
-    modified_timestamp
+    {{ dbt_utils.generate_surrogate_key(['tx_hash','change_index']) }} AS fact_changes_id,
+    SYSDATE() AS inserted_timestamp,
+    SYSDATE() AS modified_timestamp,
+    '{{ invocation_id }}' AS _invocation_id
 FROM
     {{ ref(
         'silver__changes'

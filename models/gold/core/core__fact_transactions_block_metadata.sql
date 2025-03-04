@@ -2,8 +2,8 @@
     materialized = 'incremental',
     unique_key = ['tx_hash','block_timestamp::DATE'],
     incremental_strategy = 'merge',
-    incremental_predicates = ["dynamic_range_predicate", "block_timestamp::DATE"],
-    merge_exclude_columns = ["inserted_timestamp"],
+    incremental_predicates = ["dynamic_range_predicate","block_timestamp::DATE"],    
+    merge_exclude_columns = ['inserted_timestamp'],
     cluster_by = ['block_timestamp::DATE'],
     post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(version,tx_hash);",
     tags = ['core','full_test']

@@ -4,12 +4,12 @@ models:
 
     tests:
       - fsc_utils.sequence_gaps:
-          column_name: BLOCK_NUMBER
+          column_name: block_number
           config:
             severity: error
             error_if: ">100"
     columns:
-      - name: BLOCK_NUMBER
+      - name: block_number
         tests:
           - unique
           - not_null  

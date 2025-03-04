@@ -1,8 +1,9 @@
 {{ config(
     materialized = 'incremental',
-    unique_key = "block_number",
+    unique_key = ['fact_blocks_id'],
     incremental_strategy = 'merge',
-    merge_exclude_columns = ["inserted_timestamp"],
+    incremental_predicates = ["dynamic_range_predicate","block_timestamp::DATE"],    
+    merge_exclude_columns = ['inserted_timestamp'],
     cluster_by = ['block_timestamp::DATE'],
     tags = ['core','full_test']
 ) }}
@@ -14,9 +15,11 @@ SELECT
     first_version,
     last_version,
     tx_count_from_versions AS tx_count,
-    blocks_id AS fact_blocks_id,
-    inserted_timestamp,
-    modified_timestamp
+    {{ dbt_utils.generate_surrogate_key(['block_number']) }} AS fact_blocks_id,
+    SYSDATE() AS inserted_timestamp,
+    SYSDATE() AS modified_timestamp,
+    '{{ invocation_id }}' AS _invocation_id
+
 FROM
     {{ ref(
         'silver__blocks'

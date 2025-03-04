@@ -89,7 +89,7 @@ blocks AS (
         ) over (
             ORDER BY
                 l.block_number ASC
-        ) AS prev_BLOCK_NUMBER
+        ) AS prev_block_number
     FROM
         {{ ref("core__fact_blocks") }}
         l

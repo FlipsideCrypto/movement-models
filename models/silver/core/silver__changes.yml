@@ -3,7 +3,7 @@ models:
   - name: silver__changes
           
     columns:
-      - name: BLOCK_NUMBER
+      - name: block_number
       - name: BLOCK_TIMESTAMP
       - name: TX_HASH
       - name: VERSION

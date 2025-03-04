@@ -20,7 +20,7 @@ WITH summary_stats AS (
 
 {% if is_incremental() %}
 AND (
-    block_number >= (
+         >= (
         SELECT
             MIN(block_number)
         FROM

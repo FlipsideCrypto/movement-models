@@ -7,7 +7,7 @@ models:
           column_name: BLOCKS_ID
 
     columns:
-      - name: BLOCK_NUMBER
+      - name: block_number
         tests:
           - not_null  
       - name: BLOCK_TIMESTAMP_NUM

@@ -4,7 +4,7 @@ models:
     description: '{{ doc("core__fact_transactions") }}'   
 
     columns:
-      - name: BLOCK_NUMBER
+      - name: block_number
         description: '{{ doc("block_number") }}'  
       - name: BLOCK_TIMESTAMP
         description: '{{ doc("block_timestamp") }}'   

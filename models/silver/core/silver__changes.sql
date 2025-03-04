@@ -1,6 +1,11 @@
 {{ config(
-    materialized = 'view',
-    tags = ['core']
+    materialized = 'incremental',
+    unique_key = ['tx_hash', 'change_index'],
+    incremental_strategy = 'merge',
+    incremental_predicates = ["dynamic_range_predicate", "block_timestamp::DATE"],    
+    merge_exclude_columns = ['inserted_timestamp'],
+    cluster_by = ['modified_timestamp::DATE'],
+    tags = ['core', 'full_test']
 ) }}
 
 SELECT

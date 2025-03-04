@@ -10,7 +10,7 @@ models:
             error_if: ">100"
 
     columns:
-      - name: BLOCK_NUMBER
+      - name: block_number
         tests:
           - not_null  
       - name: BLOCK_TIMESTAMP
