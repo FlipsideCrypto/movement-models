@@ -1,0 +1,35 @@
+version: 2
+
+sources:
+  - name: crosschain
+    database: "{{ 'crosschain' if target.database == 'MOVEMENT' else 'crosschain_dev' }}"
+    schema: core
+    tables:
+      - name: dim_date_hours
+      - name: address_tags
+      - name: dim_dates
+  - name: crosschain_silver
+    database: "{{ 'crosschain' if target.database == 'MOVEMENT' else 'crosschain_dev' }}"
+    schema: silver
+    tables:
+      - name: number_sequence
+  - name: bronze_streamline
+    database: streamline
+    schema: |
+      {{ "MOVEMENT_DEV" if var("STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES", False) else "MOVEMENT" }}
+    tables:
+      - name: blocks_tx
+        loaded_at_field: INSERTED_TIMESTAMP
+        freshness:
+          warn_after: {count: 2, period: hour}
+          error_after: {count: 4, period: hour}
+      - name: transactions
+        loaded_at_field: INSERTED_TIMESTAMP
+        freshness:
+          warn_after: {count: 2, period: hour}
+          error_after: {count: 4, period: hour}
+  - name: github_actions
+    database: movement
+    schema: github_actions
+    tables:
+      - name: workflows
