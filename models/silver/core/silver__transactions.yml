@@ -39,6 +39,11 @@ models:
       - name: accumulator_root_hash
       - name: event_root_hash
       - name: state_checkpoint_hash
+      - name: failed_proposer_indices
+      - name: id
+      - name: previous_block_votes_bitvec
+      - name: proposer
+      - name: ROUND
       - name: data
       - name: transactions_id
       - name: inserted_timestamp

@@ -16,17 +16,11 @@ WITH blocks AS (
     SELECT
         A.block_number,
         tx_count_from_versions AS tx_count,
-        --tx_count_from_versions -100 AS tx_count, --REMOVE FOR PUBLIC MAINNET
-        --first_version + 100 version_start --REMOVE FOR PUBLIC MAINNET
         first_version AS version_start
     FROM
         {{ ref('silver__blocks') }} A
-    WHERE
-        -- tx_count_from_versions > 100 --REMOVE FOR PUBLIC MAINNET
-        block_number != 0 --REMOVE FOR PUBLIC MAINNET
 ),
 numbers AS (
-    -- Recursive CTE to generate numbers. We'll use the maximum txcount value to limit our recursion.
     SELECT
         1 AS n
     UNION ALL

@@ -2,12 +2,18 @@ version: 2
 models:
   - name: core__fact_transactions
     description: '{{ doc("core__fact_transactions") }}'   
-
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: BLOCK_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['recency']
     columns:
       - name: block_number
         description: '{{ doc("block_number") }}'  
       - name: BLOCK_TIMESTAMP
-        description: '{{ doc("block_timestamp") }}'   
+        description: '{{ doc("block_timestamp") }}' 
       - name: TX_HASH
         description: '{{ doc("tx_hash") }}'   
       - name: VERSION

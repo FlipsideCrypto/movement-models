@@ -2,7 +2,6 @@ version: 2
 models:
   - name: core__fact_transactions_state_checkpoint
     description: '{{ doc("core__fact_transactions_state_checkpoint") }}'   
-
     columns:
       - name: block_number
         description: '{{ doc("block_number") }}'  

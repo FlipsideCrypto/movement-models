@@ -112,6 +112,11 @@ transformed AS (
     DATA :accumulator_root_hash :: STRING AS accumulator_root_hash,
     DATA :event_root_hash :: STRING AS event_root_hash,
     DATA :state_checkpoint_hash :: STRING AS state_checkpoint_hash,
+    DATA :failed_proposer_indices :: STRING AS failed_proposer_indices,
+    DATA :id :: STRING AS id,
+    DATA :previous_block_votes_bitvec :: STRING AS previous_block_votes_bitvec,
+    DATA :proposer :: STRING AS proposer,
+    DATA :ROUND :: INT AS ROUND,
     DATA,
     file_last_updated
   FROM
@@ -138,6 +143,11 @@ SELECT
   accumulator_root_hash,
   event_root_hash,
   state_checkpoint_hash,
+  failed_proposer_indices,
+  id,
+  previous_block_votes_bitvec,
+  proposer,
+  ROUND,
   DATA,
   {{ dbt_utils.generate_surrogate_key(
     ['tx_hash']

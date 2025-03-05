@@ -2,7 +2,6 @@ version: 2
 models:
   - name: core__fact_blocks
     description: '{{ doc("core__fact_blocks") }}'   
-
     columns:
       - name: block_number
         description: '{{ doc("block_number") }}'  

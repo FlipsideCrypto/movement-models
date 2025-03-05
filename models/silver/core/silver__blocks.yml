@@ -1,24 +1,43 @@
 version: 2
+
 models:
   - name: silver__blocks
+    config:
+      where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
     tests:
-      - sequence_gaps:
-          column: block_number
+      - dbt_utils.sequential_values:
+          column_name: block_number
+          interval: 1
+          config:
+            severity: error
+            error_if: ">100"
+          tags: ['test_recent']
     columns:
       - name: block_number
         tests:
           - not_null:
-              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+              tags: ['test_integrity']
       - name: block_hash
-      - name: block_timestamp_num
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - unique:
+              tags: ['test_integrity']
       - name: block_timestamp
         tests:
           - not_null:
-              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+              tags: ['test_integrity']
+      - name: tx_count_from_transactions_array
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "tx_count_from_transactions_array >= 0"
+      - name: tx_count_from_versions
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "tx_count_from_versions >= 0"
+      - name: block_timestamp_num
       - name: first_version
       - name: last_version
-      - name: tx_count_from_transactions_array
-      - name: tx_count_from_versions
       - name: blocks_id
       - name: inserted_timestamp
       - name: modified_timestamp
