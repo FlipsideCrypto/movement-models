@@ -6,9 +6,11 @@
         params ={ "external_table" :"blocks_tx",
         "sql_limit" :"8000",
         "producer_batch_size" :"50",
-        "worker_batch_size" :"50",
-        "sql_source" :"{{this.identifier}}" }
-    )
+        "worker_batch_size" :"400",
+        "sql_source" :"{{this.identifier}}",
+        "order_by_column": "block_number"}
+    ),
+    tags = ['streamline_core_realtime']
 ) }}
 
 WITH blocks AS (
