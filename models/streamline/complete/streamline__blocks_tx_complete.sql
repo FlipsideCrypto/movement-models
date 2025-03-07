@@ -10,10 +10,10 @@
 
 SELECT
     DATA :block_height :: INT AS block_number,
-    ARRAY_SIZE(
-        DATA :transactions
-    ) AS tx_count_from_transactions_array,
-    DATA :last_version :: bigint - DATA :first_version :: bigint + 1 AS tx_count_from_versions,
+    DATA :block_timestamp :: bigint AS block_timestamp,
+    DATA :first_version :: bigint AS first_version,
+    DATA :last_version :: bigint AS last_version,
+    last_version - first_version + 1 AS tx_count_from_versions,
     {{ dbt_utils.generate_surrogate_key(
         ['block_number']
     ) }} AS blocks_tx_complete_id,

@@ -3,26 +3,29 @@
     post_hook = fsc_utils.if_data_call_function_v2(
         func = 'streamline.udf_bulk_rest_api_v2',
         target = "{{this.schema}}.{{this.identifier}}",
-        params ={ 
-            "external_table" :"transactions",
-            "sql_limit" :"1000",
-            "producer_batch_size" :"50",
-            "worker_batch_size" :"400",
-            "sql_source" :"{{this.identifier}}",
-            "exploded_key": tojson([]),
-            "order_by_column": "block_number"
-        }
+        params ={ "external_table" :"transactions",
+        "sql_limit" :"10000",
+        "producer_batch_size" :"5000",
+        "worker_batch_size" :"5000",
+        "sql_source" :"{{this.identifier}}",
+        "exploded_key": tojson(["result"]),
+        "order_by_column": "block_number" }
     ),
     tags = ['streamline_core_realtime']
 ) }}
 
 WITH blocks AS (
+
     SELECT
         A.block_number,
         tx_count_from_versions AS tx_count,
-        first_version AS version_start
+        first_version,
+        last_version,
+        block_timestamp
     FROM
-        {{ ref('silver__blocks') }} A
+        {{ ref('streamline__blocks_tx_complete') }} A
+    WHERE
+        block_number <> 0
 ),
 numbers AS (
     SELECT
@@ -41,10 +44,12 @@ numbers AS (
         ),
         blocks_with_page_numbers AS (
             SELECT
-                tt.block_number :: INT AS block_number,
+                tt.block_number,
                 n.n - 1 AS multiplier,
-                version_start,
-                tx_count
+                first_version,
+                last_version,
+                tx_count,
+                block_timestamp
             FROM
                 blocks tt
                 JOIN numbers n
@@ -58,10 +63,18 @@ numbers AS (
         WORK AS (
             SELECT
                 A.block_number,
-                version_start +(
+                block_timestamp,
+                first_version,
+                last_version,
+                first_version +(
                     100 * multiplier
                 ) AS tx_version,
-                multiplier
+                multiplier,
+                LEAST (
+                    tx_count - 100 * multiplier,
+                    100
+                ) AS lim,
+                tx_count
             FROM
                 blocks_with_page_numbers A
                 LEFT JOIN {{ ref('streamline__transactions_complete') }}
@@ -72,14 +85,19 @@ numbers AS (
                 b.block_number IS NULL
         )
     SELECT
+        block_number,
+        block_timestamp,
+        first_version,
+        last_version,
         tx_version,
+        multiplier,
         ROUND(
-            tx_version,
+            block_number,
             -4
         ) :: INT AS partition_key,
         {{ target.database }}.live.udf_api(
             'GET',
-            '{Service}/v1/transactions?start=' || tx_version || '&limit=100',
+            '{Service}/v1/transactions?start=' || tx_version || '&limit=' || lim,
             OBJECT_CONSTRUCT(
                 'Content-Type',
                 'application/json',
@@ -88,10 +106,6 @@ numbers AS (
             ),
             PARSE_JSON('{}'),
             'Vault/prod/movement/mainnet'
-        ) AS request,
-        block_number,
-        multiplier
+        ) AS request
     FROM
         WORK
-    ORDER BY
-        block_number
