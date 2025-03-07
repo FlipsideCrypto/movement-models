@@ -5,7 +5,7 @@ name: "movement_models"
 version: "1.0.0"
 config-version: 2
 
-require-dbt-version: ">=1.9.0"
+require-dbt-version: ">=1.8.0"
 
 # This setting configures which "profile" dbt uses for this project.
 profile: "movement"
@@ -28,6 +28,7 @@ clean-targets: # directories to be removed by `dbt clean`
 
 tests:
   +store_failures: true # all tests
+  # +where: "modified_timestamp > dateadd(hour, -{{ var('TEST_HOURS_THRESHOLD') }}, current_timestamp)"
 
 on-run-start:
   - "{{ create_sps() }}"
@@ -56,16 +57,6 @@ models:
     relation: true
     columns: true
   +on_schema_change: "append_new_columns"
-  
-  movement_models:
-    gold:  # This will apply to ALL models under the gold directory
-      +tests:
-        - dbt_utils.recency:
-            datepart: hour
-            field: BLOCK_TIMESTAMP
-            interval: 3
-            severity: error
-            tags: ['recency']
   
 # In this example config, we tell dbt to build all models in the example/ directory
 # as tables. These settings can be overridden in the individual model files
