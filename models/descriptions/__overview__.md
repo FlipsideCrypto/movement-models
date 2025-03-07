@@ -19,14 +19,11 @@ There is more information on how to use dbt docs in the last section of this doc
 
 ### Core Fact Tables (`movement`.`CORE`.`<table_name>`)
 - [fact_blocks](#!/model/model.movement_models.core__fact_blocks)
-- [fact_events](#!/model/model.movement_models.core__fact_events)
 - [fact_changes](#!/model/model.movement_models.core__fact_changes)
+- [fact_events](#!/model/model.movement_models.core__fact_events)
 - [fact_transactions](#!/model/model.movement_models.core__fact_transactions)
 - [fact_transactions_block_metadata](#!/model/model.movement_models.core__fact_transactions_block_metadata)
 - [fact_transactions_state_checkpoint](#!/model/model.movement_models.core__fact_transactions_state_checkpoint)
-
-
-
 
 ## **Data Model Overview**
 
