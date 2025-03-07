@@ -28,6 +28,7 @@ clean-targets: # directories to be removed by `dbt clean`
 
 tests:
   +store_failures: true # all tests
+  +where: "modified_timestamp > dateadd(hour, -{{ var('test_hours_threshold') }}, current_timestamp)"
 
 on-run-start:
   - "{{ create_sps() }}"
@@ -71,7 +72,7 @@ vars:
   START_GHA_TASKS: false
   BRONZE_LOOKBACK_DAYS: '{{ env_var("BRONZE_LOOKBACK_DAYS", 3) }}'
   TEST_HOURS_THRESHOLD: 3
-  
+
 #### STREAMLINE 2.0 BEGIN ####
 
   API_INTEGRATION: '{{ var("config")[target.name]["API_INTEGRATION"] if var("config")[target.name] else var("config")["dev"]["API_INTEGRATION"] }}'
