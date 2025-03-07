@@ -9,7 +9,7 @@
             "producer_batch_size" :"50",
             "worker_batch_size" :"400",
             "sql_source" :"{{this.identifier}}",
-            "exploded_key": tojson([]),
+            "exploded_key": 'data',
             "order_by_column": "block_number"
         }
     ),
