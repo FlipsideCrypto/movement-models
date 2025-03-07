@@ -4,7 +4,7 @@
     incremental_strategy = 'merge',
     incremental_predicates = ["dynamic_range_predicate","block_timestamp::DATE"],
     merge_exclude_columns = ["inserted_timestamp"],
-    cluster_by = ['block_timestamp::DATE','modified_timestamp::DATE'],
+    cluster_by = ['block_timestamp::DATE'],
     post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(version,tx_hash,change_type,inner_change_type,change_address,change_module,change_resource,payload_function);",
     tags = ['core']
 ) }}
@@ -16,6 +16,7 @@ SELECT
     version,
     success,
     A.tx_type,
+    A.sender,
     A.payload_function,
     b.index AS change_index,
     b.value :data :data AS change_data,
