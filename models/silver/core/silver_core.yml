@@ -1,0 +1,417 @@
+version: 2
+
+models:
+  - name: silver__blocks
+    tests:
+      - dbt_utils.sequential_values:
+          column_name: block_number
+          interval: 1
+          config:
+            severity: error
+            error_if: ">100"
+          tags: ['test_recency']
+    columns:
+      - name: block_number
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - unique:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: block_hash
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - unique:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: block_timestamp
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: TIMESTAMP_NTZ
+              tags: ['test_schema']
+      - name: tx_count_from_transactions_array
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: tx_count_from_versions
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: block_timestamp_num
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: first_version
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: last_version
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+      - name: blocks_id
+      - name: inserted_timestamp
+      - name: modified_timestamp
+      - name: _invocation_id
+
+  - name: silver__changes
+    columns:
+      - name: block_number
+      - name: block_timestamp
+      - name: tx_hash
+      - name: version
+      - name: success
+      - name: tx_type
+      - name: payload_function
+      - name: change_index
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: integer
+              tags: ['test_schema']
+      - name: change_data
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type:
+              tags: ['test_schema']
+      - name: change_type
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: address
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: handle
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: inner_change_type
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: change_address
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: change_module
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: change_resource
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: key
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: value
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: state_key_hash
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: changes_id
+      - name: inserted_timestamp
+      - name: modified_timestamp
+      - name: _invocation_id
+
+  - name: silver__events
+    columns:
+      - name: block_number
+      - name: block_timestamp
+      - name: tx_hash
+      - name: version
+      - name: success
+      - name: tx_type
+      - name: payload_function
+      - name: event_index
+      - name: event_type
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: event_address
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: event_module
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: event_resource
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: event_data
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: VARIANT
+              tags: ['test_schema']
+      - name: account_address
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: creation_number
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: sequence_number
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: events_id
+      - name: inserted_timestamp
+      - name: modified_timestamp
+      - name: _invocation_id
+
+  - name: silver__transactions
+    columns:
+      - name: block_timestamp
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: TIMESTAMP_NTZ
+              tags: ['test_schema']
+      - name: tx_hash
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - unique:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: version
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: tx_type
+        tests:
+          - not_null:
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: success
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: BOOLEAN
+              tags: ['test_schema']
+      - name: sender
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: signature
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: payload
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: VARIANT
+              tags: ['test_schema']
+      - name: payload_function
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: changes
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: VARIANT
+              tags: ['test_schema']
+      - name: events
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: VARIANT
+              tags: ['test_schema']
+      - name: gas_unit_price
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: gas_used
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: max_gas_amount
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: expiration_timestamp_secs
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              tags: ['test_integrity']
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: vm_status
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: state_change_hash
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: accumulator_root_hash
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: event_root_hash
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: state_checkpoint_hash
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: failed_proposer_indices
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: VARIANT
+              tags: ['test_schema']
+      - name: id
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: previous_block_votes_bitvec
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: VARIANT
+              tags: ['test_schema']
+      - name: proposer
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+              tags: ['test_schema']
+      - name: ROUND
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INTEGER
+              tags: ['test_schema']
+      - name: data
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: VARIANT
+              tags: ['test_schema']
+      - name: transactions_id
+      - name: inserted_timestamp
+      - name: modified_timestamp
+      - name: _invocation_id
+      
