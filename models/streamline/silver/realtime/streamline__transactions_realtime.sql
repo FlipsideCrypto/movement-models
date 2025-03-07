@@ -8,7 +8,7 @@
         "producer_batch_size" :"5000",
         "worker_batch_size" :"5000",
         "sql_source" :"{{this.identifier}}",
-        "exploded_key": tojson(["result"]),
+        "exploded_key": tojson(["data"]),
         "order_by_column": "block_number" }
     ),
     tags = ['streamline_core_realtime']
