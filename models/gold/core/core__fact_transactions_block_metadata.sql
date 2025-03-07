@@ -2,7 +2,7 @@
     materialized = 'incremental',
     unique_key = ['tx_hash','block_timestamp::DATE'],
     incremental_strategy = 'merge',
-    incremental_predicates = ["dynamic_range_predicate","block_timestamp::DATE"],    
+    incremental_predicates = ["dynamic_range_predicate","block_timestamp::DATE"],
     merge_exclude_columns = ['inserted_timestamp'],
     cluster_by = ['block_timestamp::DATE'],
     post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(version,tx_hash);",
@@ -10,7 +10,7 @@
 ) }}
 
 SELECT
-    b.block_number,
+    A.block_number,
     A.block_timestamp,
     A.version,
     A.tx_hash,
@@ -26,7 +26,7 @@ SELECT
     A.id,
     A.previous_block_votes_bitvec,
     A.proposer,
-    A.ROUND,
+    A.round,
     A.vm_status,
     A.state_change_hash,
     A.accumulator_root_hash,
@@ -39,11 +39,7 @@ SELECT
 FROM
     {{ ref(
         'silver__transactions'
-    ) }} A
-    JOIN {{ ref('silver__blocks') }}
-    b
-    ON A.version BETWEEN b.first_version
-    AND b.last_version
+    ) }}
 WHERE
     LEFT(
         tx_type,
@@ -51,10 +47,7 @@ WHERE
     ) = 'block'
 
 {% if is_incremental() %}
-AND GREATEST(
-    A.modified_timestamp,
-    b.modified_timestamp
-) >= (
+AND A.modified_timestamp >= (
     SELECT
         MAX(modified_timestamp)
     FROM

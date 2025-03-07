@@ -10,7 +10,7 @@
 ) }}
 
 SELECT
-    b.block_number,
+    A.block_number,
     A.block_timestamp,
     A.version,
     A.tx_hash,
@@ -40,19 +40,10 @@ FROM
     {{ ref(
         'silver__transactions'
     ) }} A
-    JOIN {{ ref(
-        'silver__blocks'
-    ) }}
-    b
-    ON A.version BETWEEN b.first_version
-    AND b.last_version
 
 {% if is_incremental() %}
 WHERE
-    GREATEST(
-        A.modified_timestamp,
-        b.modified_timestamp
-    ) >= (
+    A.modified_timestamp >= (
         SELECT
             MAX(modified_timestamp)
         FROM

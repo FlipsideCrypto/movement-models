@@ -1,94 +1,50 @@
 {{ config(
-    materialized = 'incremental',
-    unique_key = ['tx_hash', 'block_timestamp::DATE'],
-    incremental_strategy = 'merge',
-    incremental_predicates = ["dynamic_range_predicate", "block_timestamp::DATE"],    
-    merge_exclude_columns = ['inserted_timestamp'],
-    cluster_by = ['modified_timestamp::DATE'],
-    tags = ['core']
+  materialized = 'incremental',
+  unique_key = ['tx_hash', 'block_timestamp::DATE'],
+  incremental_strategy = 'merge',
+  incremental_predicates = ["dynamic_range_predicate", "block_timestamp::DATE"],
+  merge_exclude_columns = ['inserted_timestamp'],
+  cluster_by = ['modified_timestamp::DATE'],
+  tags = ['core']
 ) }}
-
 -- depends_on: {{ ref('bronze__blocks_tx') }}
 -- depends_on: {{ ref('bronze__transactions') }}
+WITH from_transactions AS (
 
-WITH from_blocks AS (
   SELECT
+    A.value :BLOCK_NUMBER :: bigint AS block_number,
     TO_TIMESTAMP(
-      b.value :timestamp :: STRING
+      A.value :BLOCK_TIMESTAMP :: STRING
     ) AS block_timestamp,
-    b.value :hash :: STRING AS tx_hash,
-    b.value :version :: INT AS version,
-    b.value :type :: STRING AS tx_type,
-    b.value AS DATA,
+    b.data :hash :: STRING AS tx_hash,
+    b.data :version :: INT AS version,
+    b.data :type :: STRING AS tx_type,
+    A.data,
     inserted_timestamp AS file_last_updated
   FROM
-  {% if is_incremental() %}
-    {{ ref('bronze__blocks_tx') }}
-  {% else %}
-    {{ ref('bronze__blocks_tx_FR') }}
-  {% endif %}
-  A,
-  LATERAL FLATTEN (DATA :transactions) b
 
-  {% if is_incremental() %}
-  WHERE
-    A.inserted_timestamp >= (
-      SELECT
-        DATEADD('minute', -15, MAX(modified_timestamp))
-      FROM
-        {{ this }})
-  {% endif %}
-),
-from_transactions AS (
+{% if is_incremental() %}
+{{ ref('bronze__transactions') }}
+{% else %}
+  {{ ref('bronze__transactions_FR') }}
+{% endif %}
+
+A
+WHERE
+  version BETWEEN A.value :FIRST_VERSION :: bigint
+  AND A.value :LAST_VERSION :: bigint
+
+{% if is_incremental() %}
+AND A.inserted_timestamp >= (
   SELECT
-    TO_TIMESTAMP(
-      b.value :timestamp :: STRING
-    ) AS block_timestamp,
-    b.value :hash :: STRING AS tx_hash,
-    b.value :version :: INT AS version,
-    b.value :type :: STRING AS tx_type,
-    b.value AS DATA,
-    inserted_timestamp AS file_last_updated
+    DATEADD('minute', -5, MAX(modified_timestamp))
   FROM
-  {% if is_incremental() %}
-    {{ ref('bronze__transactions') }}
-  {% else %}
-    {{ ref('bronze__transactions_FR') }}
+    {{ this }})
   {% endif %}
-  A,
-  LATERAL FLATTEN(A.data) b
-  {% if is_incremental() %}
-  WHERE
-    A.inserted_timestamp >= (
-      SELECT
-        DATEADD('minute', -15, MAX(modified_timestamp))
-      FROM
-        {{ this }})
-  {% endif %}
-),
-combo AS (
-  SELECT
-    block_timestamp,
-    tx_hash,
-    version,
-    tx_type,
-    DATA,
-    file_last_updated
-  FROM
-    from_blocks
-  UNION ALL
-  SELECT
-    block_timestamp,
-    tx_hash,
-    version,
-    tx_type,
-    DATA,
-    file_last_updated
-  FROM
-    from_transactions A
 ),
 transformed AS (
   SELECT
+    block_number,
     COALESCE(
       block_timestamp,
       '1970-01-01 00:00:00.000'
@@ -120,9 +76,10 @@ transformed AS (
     DATA,
     file_last_updated
   FROM
-    combo
+    from_transactions
 )
 SELECT
+  block_number,
   block_timestamp,
   tx_hash,
   version,

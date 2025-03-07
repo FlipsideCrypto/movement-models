@@ -5,7 +5,8 @@
     incremental_predicates = ["dynamic_range_predicate", "block_timestamp::DATE"],    
     merge_exclude_columns = ['inserted_timestamp'],
     cluster_by = ['modified_timestamp::DATE'],
-    tags = ['core']
+    tags = ['core'],
+    enabled = false
 ) }}
 
 SELECT
