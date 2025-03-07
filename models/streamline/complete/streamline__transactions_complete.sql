@@ -1,7 +1,7 @@
 {{ config (
     materialized = "incremental",
     incremental_strategy = 'merge',
-    unique_key = "transactions_complete_id",
+    unique_key = ['block_number','multiplier_no'],
     cluster_by = "ROUND(block_number, -3)",
     merge_exclude_columns = ["inserted_timestamp"],
     post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION on equality(block_number)"
@@ -27,10 +27,6 @@ FROM
 {% endif %}
 
 A
-JOIN {{ ref('silver__blocks') }}
-b
-ON DATA [0] :version :: INT BETWEEN b.first_version
-AND b.last_version
 
 {% if is_incremental() %}
 WHERE

@@ -4,6 +4,9 @@
 ) }}
 
 SELECT
+    0 AS block_number
+UNION ALL
+SELECT
     _id AS block_number
 FROM
     {{ source(

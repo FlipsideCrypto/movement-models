@@ -4,11 +4,11 @@
         func = 'streamline.udf_bulk_rest_api_v2',
         target = "{{this.schema}}.{{this.identifier}}",
         params ={ "external_table" :"blocks_tx",
-        "sql_limit" :"8000",
-        "producer_batch_size" :"50",
-        "worker_batch_size" :"400",
+        "sql_limit" :"10000",
+        "producer_batch_size" :"5000",
+        "worker_batch_size" :"5000",
         "sql_source" :"{{this.identifier}}",
-        "order_by_column": "block_number"}
+        "order_by_column": "block_number" }
     ),
     tags = ['streamline_core_realtime']
 ) }}
@@ -19,8 +19,6 @@ WITH blocks AS (
         block_number
     FROM
         {{ ref('streamline__blocks') }}
-    WHERE
-        block_number != 0
     EXCEPT
     SELECT
         block_number
@@ -35,7 +33,7 @@ SELECT
     ) :: INT AS partition_key,
     {{ target.database }}.live.udf_api(
         'GET',
-        '{Service}/v1/blocks/by_height/' || block_number || '?with_transactions=true',
+        '{Service}/v1/blocks/by_height/' || block_number || '?with_transactions=false',
         OBJECT_CONSTRUCT(
             'Content-Type',
             'application/json',
