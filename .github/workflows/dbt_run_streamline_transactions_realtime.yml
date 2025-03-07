@@ -3,7 +3,9 @@ run-name: dbt_run_streamline_transactions_realtime
 
 on:
   workflow_dispatch:
-
+  schedule:
+    - cron: "15,45 * * * *"
+    
 env:
   DBT_PROFILES_DIR: ./
 

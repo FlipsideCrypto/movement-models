@@ -4,7 +4,7 @@ run-name: dbt_run_incremental_core
 on:
   workflow_dispatch:
   schedule:
-    - cron: "22,52 * * * *"
+    - cron: "25,55 * * * *"
     
 env:
   DBT_PROFILES_DIR: "${{ vars.DBT_PROFILES_DIR }}"
