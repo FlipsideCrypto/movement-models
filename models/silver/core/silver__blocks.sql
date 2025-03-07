@@ -19,9 +19,9 @@ WITH base AS (
         ) AS block_timestamp,
         DATA :first_version :: bigint AS first_version,
         DATA :last_version :: bigint AS last_version,
-        ARRAY_SIZE(
+        {# ARRAY_SIZE(
             DATA :transactions
-        ) AS tx_count_from_transactions_array,
+        ) AS tx_count_from_transactions_array, #}
         last_version - first_version + 1 AS tx_count_from_versions
     FROM
     {% if is_incremental() %}
@@ -29,7 +29,7 @@ WITH base AS (
     WHERE
         inserted_timestamp >= (
             SELECT
-                DATEADD('minute', -15, MAX(inserted_timestamp))
+                DATEADD('minute', -5, MAX(inserted_timestamp))
             FROM
                 {{ this }})
     AND
@@ -49,7 +49,7 @@ SELECT
     block_timestamp,
     first_version,
     last_version,
-    tx_count_from_transactions_array,
+    {# tx_count_from_transactions_array, #}
     tx_count_from_versions,
     {{ dbt_utils.generate_surrogate_key(
         ['block_number']
