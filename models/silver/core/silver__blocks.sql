@@ -7,7 +7,6 @@
     tags = ['core']
 ) }}
 -- depends_on: {{ ref('bronze__blocks_tx') }}
-
 WITH base AS (
     SELECT
         VALUE,
@@ -29,11 +28,11 @@ WITH base AS (
     WHERE
         inserted_timestamp >= (
             SELECT
-                DATEADD('minute', -5, MAX(inserted_timestamp))
+                DATEADD('minute', -5, MAX(modified_timestamp))
             FROM
                 {{ this }})
     AND
-        block_number > 0
+        block_number > 0 -- genesis block has >100k lines of json
     {% else %}
         {{ ref('bronze__blocks_tx_FR') }}
     {% endif %}

@@ -7,40 +7,37 @@
   cluster_by = ['modified_timestamp::DATE'],
   tags = ['core']
 ) }}
--- depends_on: {{ ref('bronze__blocks_tx') }}
 -- depends_on: {{ ref('bronze__transactions') }}
 WITH from_transactions AS (
 
   SELECT
-    A.value :BLOCK_NUMBER :: bigint AS block_number,
+    value :BLOCK_NUMBER :: bigint AS block_number,
     TO_TIMESTAMP(
-      A.value :BLOCK_TIMESTAMP :: STRING
+      VALUE :BLOCK_TIMESTAMP :: STRING
     ) AS block_timestamp,
-    b.data :hash :: STRING AS tx_hash,
-    b.data :version :: INT AS version,
-    b.data :type :: STRING AS tx_type,
-    A.data,
+    DATA :hash :: STRING AS tx_hash,
+    DATA :version :: INT AS version,
+    DATA :type :: STRING AS tx_type,
+    DATA,
     inserted_timestamp AS file_last_updated
   FROM
-
-{% if is_incremental() %}
-{{ ref('bronze__transactions') }}
-{% else %}
-  {{ ref('bronze__transactions_FR') }}
-{% endif %}
-
-A
-WHERE
-  version BETWEEN A.value :FIRST_VERSION :: bigint
-  AND A.value :LAST_VERSION :: bigint
-
-{% if is_incremental() %}
-AND A.inserted_timestamp >= (
-  SELECT
-    DATEADD('minute', -5, MAX(modified_timestamp))
-  FROM
-    {{ this }})
+  {% if is_incremental() %}
+    {{ ref('bronze__transactions') }}
+  {% else %}
+    {{ ref('bronze__transactions_FR') }}
   {% endif %}
+
+  WHERE
+    version BETWEEN VALUE :FIRST_VERSION :: bigint
+    AND VALUE :LAST_VERSION :: bigint
+
+  {% if is_incremental() %}
+  AND inserted_timestamp >= (
+    SELECT
+      DATEADD('minute', -5, MAX(modified_timestamp))
+    FROM
+      {{ this }})
+    {% endif %}
 ),
 transformed AS (
   SELECT
@@ -53,6 +50,7 @@ transformed AS (
     version,
     tx_type,
     DATA :success :: BOOLEAN AS success,
+    DATA :epoch :: INT AS epoch,
     DATA :sender :: STRING AS sender,
     DATA :signature :: STRING AS signature,
     DATA :payload AS payload,
@@ -72,7 +70,7 @@ transformed AS (
     DATA :id :: STRING AS id,
     DATA :previous_block_votes_bitvec AS previous_block_votes_bitvec,
     DATA :proposer :: STRING AS proposer,
-    DATA :ROUND :: INT AS ROUND,
+    DATA :round :: INT AS round,
     DATA,
     file_last_updated
   FROM

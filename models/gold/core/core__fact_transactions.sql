@@ -10,27 +10,27 @@
 ) }}
 
 SELECT
-    A.block_number,
-    A.block_timestamp,
-    A.version,
-    A.tx_hash,
-    A.success,
-    A.tx_type,
-    A.sender,
-    A.signature,
-    A.payload,
-    A.payload_function,
-    A.changes,
-    A.events,
-    A.gas_unit_price,
-    A.gas_used,
-    A.max_gas_amount,
-    A.expiration_timestamp_secs,
-    A.vm_status,
-    A.state_change_hash,
-    A.accumulator_root_hash,
-    A.event_root_hash,
-    A.state_checkpoint_hash,
+    block_number,
+    block_timestamp,
+    version,
+    tx_hash,
+    success,
+    tx_type,
+    sender,
+    signature,
+    payload,
+    payload_function,
+    changes,
+    events,
+    gas_unit_price,
+    gas_used,
+    max_gas_amount,
+    expiration_timestamp_secs,
+    vm_status,
+    state_change_hash,
+    accumulator_root_hash,
+    event_root_hash,
+    state_checkpoint_hash,
     {{ dbt_utils.generate_surrogate_key(
         ['tx_hash']
     ) }} AS fact_transactions_id,
@@ -39,11 +39,11 @@ SELECT
 FROM
     {{ ref(
         'silver__transactions'
-    ) }} A
+    ) }}
 
 {% if is_incremental() %}
 WHERE
-    A.modified_timestamp >= (
+    modified_timestamp >= (
         SELECT
             MAX(modified_timestamp)
         FROM

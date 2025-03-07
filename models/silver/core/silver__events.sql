@@ -8,7 +8,7 @@
     tags = ['core'],
     enabled = false
 ) }}
-
+-- depends_on: {{ ref('core__fact_transactions') }}
 SELECT
     A.block_number,
     A.block_timestamp,
