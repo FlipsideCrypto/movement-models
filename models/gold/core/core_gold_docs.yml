@@ -1,0 +1,232 @@
+version: 2
+models:
+  - name: core__fact_blocks
+    description: '{{ doc("core__fact_blocks") }}' 
+    columns:
+      - name: block_number
+        description: '{{ doc("block_number") }}'  
+      - name: BLOCK_TIMESTAMP
+        description: '{{ doc("block_timestamp") }}' 
+      - name: BLOCK_HASH
+        description: '{{ doc("block_hash") }}'   
+      - name: FIRST_VERSION
+        description: '{{ doc("first_version") }}'   
+      - name: LAST_VERSION
+        description: '{{ doc("last_version") }}'   
+      - name: TX_COUNT
+        description: '{{ doc("tx_count") }}'   
+      - name: FACT_BLOCKS_ID
+        description: '{{ doc("pk") }}'   
+      - name: INSERTED_TIMESTAMP
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: MODIFIED_TIMESTAMP
+        description: '{{ doc("modified_timestamp") }}'  
+
+  - name: core__fact_changes
+    description: '{{ doc("core__fact_changes") }}'  
+    columns:
+      - name: block_number
+        description: '{{ doc("block_number") }}'  
+      - name: BLOCK_TIMESTAMP
+        description: '{{ doc("block_timestamp") }}'   
+      - name: TX_HASH
+        description: '{{ doc("tx_hash") }}'   
+      - name: VERSION
+        description: '{{ doc("version") }}'   
+      - name: SUCCESS
+        description: '{{ doc("success") }}'   
+      - name: TX_TYPE
+        description: '{{ doc("tx_type") }}'  
+      - name: PAYLOAD_FUNCTION
+        description: '{{ doc("payload_function") }}' 
+      - name: CHANGE_INDEX
+        description: '{{ doc("change_index") }}'  
+      - name: CHANGE_DATA
+        description: '{{ doc("change_data") }}'   
+      - name: CHANGE_TYPE
+        description: '{{ doc("change_type") }}'  
+      - name: ADDRESS
+        description: '{{ doc("address_change") }}'   
+      - name: HANDLE
+        description: '{{ doc("handle_change") }}'   
+      - name: INNER_CHANGE_TYPE
+        description: '{{ doc("inner_change_type") }}'   
+      - name: CHANGE_ADDRESS
+        description: '{{ doc("change_address") }}' 
+      - name: CHANGE_MODULE   
+        description: '{{ doc("change_module") }}' 
+      - name: CHANGE_RESOURCE   
+        description: '{{ doc("change_resource") }}'   
+      - name: KEY 
+        description: '{{ doc("key_change") }}' 
+      - name: VALUE 
+        description: '{{ doc("value_change") }}'          
+      - name: STATE_KEY_HASH
+      - name: FACT_CHANGES_ID
+        description: '{{ doc("pk") }}'   
+      - name: INSERTED_TIMESTAMP
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: MODIFIED_TIMESTAMP
+        description: '{{ doc("modified_timestamp") }}'   
+
+  - name: core__fact_events
+    description: '{{ doc("core__fact_events") }}'   
+    columns:
+      - name: block_number
+        description: '{{ doc("block_number") }}'  
+      - name: BLOCK_TIMESTAMP
+        description: '{{ doc("block_timestamp") }}'   
+      - name: TX_HASH
+        description: '{{ doc("tx_hash") }}'   
+      - name: VERSION
+        description: '{{ doc("version") }}'   
+      - name: SUCCESS
+        description: '{{ doc("success") }}'   
+      - name: TX_TYPE
+        description: '{{ doc("tx_type") }}' 
+      - name: PAYLOAD_FUNCTION
+        description: '{{ doc("payload_function") }}' 
+      - name: EVENT_INDEX
+        description: '{{ doc("event_index") }}'  
+      - name: EVENT_TYPE
+        description: '{{ doc("event_type") }}'   
+      - name: EVENT_ADDRESS
+        description: '{{ doc("event_address") }}'  
+      - name: EVENT_MODULE
+        description: '{{ doc("event_module") }}'   
+      - name: EVENT_RESOURCE
+        description: '{{ doc("event_resource") }}'   
+      - name: EVENT_DATA
+        description: '{{ doc("event_data") }}'   
+      - name: ACCOUNT_ADDRESS
+        description: '{{ doc("address_event") }}' 
+      - name: CREATION_NUMBER   
+        description: '{{ doc("creation_number") }}' 
+      - name: SEQUENCE_NUMBER   
+        description: '{{ doc("sequence_number") }}'   
+      - name: FACT_EVENTS_ID
+        description: '{{ doc("pk") }}'   
+      - name: INSERTED_TIMESTAMP
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: MODIFIED_TIMESTAMP
+        description: '{{ doc("modified_timestamp") }}'  
+
+  - name: core__fact_transactions_block_metadata
+    description: '{{ doc("core__fact_transactions_block_metadata") }}'   
+    columns:
+      - name: block_number
+        description: '{{ doc("block_number") }}'  
+      - name: BLOCK_TIMESTAMP
+        description: '{{ doc("block_timestamp") }}'   
+      - name: TX_HASH
+        description: '{{ doc("tx_hash") }}'   
+      - name: VERSION
+        description: '{{ doc("version") }}'   
+      - name: SUCCESS
+        description: '{{ doc("success") }}'   
+      - name: TX_TYPE
+        description: '{{ doc("tx_type") }}'   
+      - name: EPOCH
+        description: '{{ doc("epoch") }}'   
+      - name: EVENTS
+        description: '{{ doc("events") }}'  
+      - name: CHANGES
+        description: '{{ doc("changes") }}'   
+      - name: FAILED_PROPOSER_INDICES
+      - name: ID
+      - name: PREVIOUS_BLOCK_VOTES_BITVEC
+      - name: PROPOSER
+        description: '{{ doc("proposer") }}'   
+      - name: ROUND
+        description: '{{ doc("round") }}'  
+      - name: VM_STATUS 
+        description: '{{ doc("vm_status") }}'   
+      - name: STATE_CHANGE_HASH
+      - name: ACCUMULATOR_ROOT_HASH
+        description: '{{ doc("accumulator_root_hash") }}'  
+      - name: EVENT_ROOT_HASH
+        description: '{{ doc("event_root_hash") }}' 
+      - name: FACT_TRANSACTIONS_BLOCK_METADATA_ID
+        description: '{{ doc("pk") }}'   
+      - name: INSERTED_TIMESTAMP
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: MODIFIED_TIMESTAMP
+        description: '{{ doc("modified_timestamp") }}'   
+
+  - name: core__fact_transactions_state_checkpoint
+    description: '{{ doc("core__fact_transactions_state_checkpoint") }}'   
+    columns:
+      - name: block_number
+        description: '{{ doc("block_number") }}'  
+      - name: BLOCK_TIMESTAMP
+        description: '{{ doc("block_timestamp") }}'   
+      - name: TX_HASH
+        description: '{{ doc("tx_hash") }}'   
+      - name: VERSION
+        description: '{{ doc("version") }}'   
+      - name: SUCCESS
+        description: '{{ doc("success") }}'   
+      - name: TX_TYPE
+        description: '{{ doc("tx_type") }}'  
+      - name: VM_STATUS 
+        description: '{{ doc("vm_status") }}'   
+      - name: STATE_CHECKPOINT_HASH
+      - name: ACCUMULATOR_ROOT_HASH
+        description: '{{ doc("accumulator_root_hash") }}'   
+      - name: EVENT_ROOT_HASH
+        description: '{{ doc("event_root_hash") }}'       
+      - name: FACT_TRANSACTIONS_STATE_CHECKPOINT_ID
+        description: '{{ doc("pk") }}'   
+      - name: INSERTED_TIMESTAMP
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: MODIFIED_TIMESTAMP
+        description: '{{ doc("modified_timestamp") }}'   
+
+  - name: core__fact_transactions
+    description: '{{ doc("core__fact_transactions") }}'   
+    columns:
+      - name: block_number
+        description: '{{ doc("block_number") }}'  
+      - name: BLOCK_TIMESTAMP
+        description: '{{ doc("block_timestamp") }}' 
+      - name: TX_HASH
+        description: '{{ doc("tx_hash") }}'   
+      - name: VERSION
+        description: '{{ doc("version") }}'   
+      - name: SUCCESS
+        description: '{{ doc("success") }}'   
+      - name: TX_TYPE
+        description: '{{ doc("tx_type") }}'   
+      - name: SENDER
+        description: '{{ doc("sender") }}'  
+      - name: SIGNATURE
+        description: '{{ doc("signature") }}'   
+      - name: PAYLOAD
+        description: '{{ doc("payload") }}'  
+      - name: PAYLOAD_FUNCTION
+        description: '{{ doc("payload_function") }}' 
+      - name: CHANGES
+        description: '{{ doc("changes") }}'   
+      - name: EVENTS
+        description: '{{ doc("events") }}'   
+      - name: GAS_UNIT_PRICE
+        description: '{{ doc("gas_unit_price") }}'   
+      - name: GAS_USED
+        description: '{{ doc("gas_used") }}' 
+      - name: MAX_GAS_AMOUNT   
+        description: '{{ doc("max_gas_amount") }}' 
+      - name: EXPIRATION_TIMESTAMP_SECS   
+        description: '{{ doc("expiration_timestamp_secs") }}'   
+      - name: VM_STATUS 
+        description: '{{ doc("vm_status") }}'   
+      - name: STATE_CHANGE_HASH
+      - name: ACCUMULATOR_ROOT_HASH
+        description: '{{ doc("accumulator_root_hash") }}' 
+      - name: EVENT_ROOT_HASH
+        description: '{{ doc("event_root_hash") }}'      
+      - name: FACT_TRANSACTIONS_ID
+        description: '{{ doc("pk") }}'   
+      - name: INSERTED_TIMESTAMP
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: MODIFIED_TIMESTAMP
+        description: '{{ doc("modified_timestamp") }}'   
