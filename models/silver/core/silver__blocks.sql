@@ -8,6 +8,7 @@
 ) }}
 -- depends_on: {{ ref('bronze__blocks_tx') }}
 WITH base AS (
+
     SELECT
         VALUE,
         DATA :block_height :: INT AS block_number,
@@ -19,29 +20,32 @@ WITH base AS (
         DATA :first_version :: bigint AS first_version,
         DATA :last_version :: bigint AS last_version,
         {# ARRAY_SIZE(
-            DATA :transactions
-        ) AS tx_count_from_transactions_array, #}
-        last_version - first_version + 1 AS tx_count_from_versions
-    FROM
-    {% if is_incremental() %}
-        {{ ref('bronze__blocks_tx') }}
-    WHERE
-        inserted_timestamp >= (
-            SELECT
-                DATEADD('minute', -5, MAX(modified_timestamp))
-            FROM
-                {{ this }})
-    AND
-        block_number > 0 -- genesis block has >100k lines of json
-    {% else %}
-        {{ ref('bronze__blocks_tx_FR') }}
-    {% endif %}
+        DATA :transactions
+) AS tx_count_from_transactions_array,
+#}
+last_version - first_version + 1 AS tx_count_from_versions
+FROM
 
-    qualify(ROW_NUMBER() over(PARTITION BY block_number
-    ORDER BY
-        inserted_timestamp DESC)) = 1
-)
-SELECT 
+{% if is_incremental() %}
+{{ ref('bronze__blocks_tx') }}
+WHERE
+    inserted_timestamp >= (
+        SELECT
+            DATEADD('minute', -5, MAX(modified_timestamp))
+        FROM
+            {{ this }})
+            AND block_number > 0 -- genesis block has >100k lines of json
+        {% else %}
+            {{ ref('bronze__blocks_tx_FR') }}
+        WHERE
+            block_number IS NOT NULL
+        {% endif %}
+
+        qualify(ROW_NUMBER() over(PARTITION BY block_number
+        ORDER BY
+            inserted_timestamp DESC)) = 1
+    )
+SELECT
     block_number,
     block_hash,
     block_timestamp_num,
