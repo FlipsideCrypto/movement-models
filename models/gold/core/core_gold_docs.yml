@@ -37,6 +37,8 @@ models:
         description: '{{ doc("success") }}'   
       - name: TX_TYPE
         description: '{{ doc("tx_type") }}'  
+      - name: SENDER
+        description: '{{ doc("sender") }}'
       - name: PAYLOAD_FUNCTION
         description: '{{ doc("payload_function") }}' 
       - name: CHANGE_INDEX
@@ -84,6 +86,8 @@ models:
         description: '{{ doc("success") }}'   
       - name: TX_TYPE
         description: '{{ doc("tx_type") }}' 
+      - name: SENDER
+        description: '{{ doc("sender") }}'
       - name: PAYLOAD_FUNCTION
         description: '{{ doc("payload_function") }}' 
       - name: EVENT_INDEX
@@ -125,7 +129,15 @@ models:
       - name: SUCCESS
         description: '{{ doc("success") }}'   
       - name: TX_TYPE
-        description: '{{ doc("tx_type") }}'   
+        description: '{{ doc("tx_type") }}'  
+      - name: SENDER
+        description: '{{ doc("sender") }}'  
+      - name: SIGNATURE
+        description: '{{ doc("signature") }}'   
+      - name: PAYLOAD
+        description: '{{ doc("payload") }}'  
+      - name: PAYLOAD_FUNCTION
+        description: '{{ doc("payload_function") }}' 
       - name: EPOCH
         description: '{{ doc("epoch") }}'   
       - name: EVENTS
@@ -171,6 +183,7 @@ models:
       - name: VM_STATUS 
         description: '{{ doc("vm_status") }}'   
       - name: STATE_CHECKPOINT_HASH
+        description: '{{ doc("state_checkpoint_hash") }}'
       - name: ACCUMULATOR_ROOT_HASH
         description: '{{ doc("accumulator_root_hash") }}'   
       - name: EVENT_ROOT_HASH
