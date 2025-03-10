@@ -19,12 +19,10 @@ sources:
       {{ "MOVEMENT_DEV" if var("STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES", False) else "MOVEMENT" }}
     tables:
       - name: blocks_tx
-        loaded_at_field: INSERTED_TIMESTAMP
         freshness:
           warn_after: {count: 2, period: hour}
           error_after: {count: 4, period: hour}
       - name: transactions
-        loaded_at_field: INSERTED_TIMESTAMP
         freshness:
           warn_after: {count: 2, period: hour}
           error_after: {count: 4, period: hour}
