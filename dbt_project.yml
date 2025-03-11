@@ -28,7 +28,8 @@ clean-targets: # directories to be removed by `dbt clean`
 
 tests:
   +store_failures: true # all tests
-  # +where: "modified_timestamp > dateadd(hour, -{{ var('TEST_HOURS_THRESHOLD') }}, current_timestamp)"
+  test_quality:
+    +where: "modified_timestamp > dateadd(hour, -{{ var('TEST_HOURS_THRESHOLD', 3) }}, current_timestamp)"
 
 on-run-start:
   - "{{ create_sps() }}"
