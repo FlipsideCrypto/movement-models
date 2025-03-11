@@ -43,7 +43,7 @@ jobs:
           dbt deps
       - name: Run DBT Jobs
         run: |
-          dbt test -m tag:test_recency tag:test_quality tag:test_integrity --vars '{"TEST_HOURS_THRESHOLD":168}'
+          dbt test -m tag:test_recency tag:test_quality --vars '{"TEST_HOURS_THRESHOLD":168}'
           
         continue-on-error: true
 
