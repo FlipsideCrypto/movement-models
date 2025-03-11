@@ -30,6 +30,8 @@ tests:
   +store_failures: true # all tests
   test_quality:
     +where: "modified_timestamp > dateadd(hour, -{{ var('TEST_HOURS_THRESHOLD', 3) }}, current_timestamp)"
+  test_integrity:
+    +where: "modified_timestamp > dateadd(hour, -{{ var('TEST_HOURS_THRESHOLD', 3) }}, current_timestamp)"
 
 on-run-start:
   - "{{ create_sps() }}"
