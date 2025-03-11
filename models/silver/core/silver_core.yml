@@ -2,6 +2,9 @@ version: 2
 
 models:
   - name: silver__blocks
+    config:
+      contract:
+        enforced: true
     tests:
       - dbt_utils.sequential_values:
           column_name: block_number
@@ -12,397 +15,320 @@ models:
           tags: ['test_recency']
     columns:
       - name: block_number
+        data_type: NUMBER
         tests:
           - not_null:
               tags: ['test_quality']
           - unique:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: block_hash
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
           - unique:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: block_timestamp
+        data_type: TIMESTAMP_NTZ
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: TIMESTAMP_NTZ
-              tags: ['test_integrity']
       - name: tx_count_from_versions
+        data_type: NUMBER
         tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: block_timestamp_num
+        data_type: NUMBER
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: first_version
+        data_type: NUMBER
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: last_version
+        data_type: NUMBER
         tests:
           - not_null:
               tags: ['test_quality']
       - name: blocks_id
+        data_type: VARCHAR
       - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
       - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
       - name: _invocation_id
+        data_type: VARCHAR
 
   - name: silver__changes
+    config:
+      contract:
+        enforced: true
     columns:
       - name: block_number
+        data_type: NUMBER
       - name: block_timestamp
+        data_type: TIMESTAMP_NTZ
       - name: tx_hash
+        data_type: VARCHAR
       - name: version
+        data_type: NUMBER
       - name: success
+        data_type: BOOLEAN
       - name: tx_type
+        data_type: VARCHAR
       - name: payload_function
+        data_type: VARCHAR
       - name: change_index
+        data_type: NUMBER
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: change_data
+        data_type: VARIANT
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARIANT
-              tags: ['test_integrity']
       - name: change_type
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: address
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: handle
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: inner_change_type
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: change_address
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: change_module
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: change_resource
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: key
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: value
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: state_key_hash
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: changes_id
+        data_type: VARCHAR
       - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
       - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
       - name: _invocation_id
+        data_type: VARCHAR
 
   - name: silver__events
+    config:
+      contract:
+        enforced: true
     columns:
       - name: block_number
+        data_type: NUMBER
       - name: block_timestamp
+        data_type: TIMESTAMP_NTZ
       - name: tx_hash
+        data_type: VARCHAR
       - name: version
+        data_type: NUMBER
       - name: success
+        data_type: BOOLEAN
       - name: tx_type
+        data_type: VARCHAR
       - name: payload_function
+        data_type: VARCHAR
       - name: event_index
+        data_type: NUMBER
       - name: event_type
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: event_address
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: event_module
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: event_resource
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: event_data
+        data_type: VARIANT
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARIANT
-              tags: ['test_integrity']
       - name: account_address
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: creation_number
+        data_type: NUMBER
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: sequence_number
+        data_type: NUMBER
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: events_id
+        data_type: VARCHAR
       - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
       - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
       - name: _invocation_id
+        data_type: VARCHAR
 
   - name: silver__transactions
+    config:
+      contract:
+        enforced: true
     columns:
+      - name: block_number
+        data_type: NUMBER
       - name: block_timestamp
+        data_type: TIMESTAMP_NTZ
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: TIMESTAMP_NTZ
-              tags: ['test_integrity']
       - name: tx_hash
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
           - unique:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: version
+        data_type: NUMBER
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: tx_type
+        data_type: VARCHAR
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
       - name: success
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: BOOLEAN
-              tags: ['test_integrity']
+        data_type: BOOLEAN
       - name: sender
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
+        data_type: VARCHAR
       - name: signature
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
+        data_type: VARCHAR
       - name: payload
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARIANT
-              tags: ['test_integrity']
+        data_type: VARIANT
       - name: payload_function
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
+        data_type: VARCHAR
       - name: changes
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARIANT
-              tags: ['test_integrity']
+        data_type: VARIANT
       - name: events
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARIANT
-              tags: ['test_integrity']
+        data_type: VARIANT
       - name: gas_unit_price
+        data_type: NUMBER
         tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: gas_used
+        data_type: NUMBER
         tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: max_gas_amount
+        data_type: NUMBER
         tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: expiration_timestamp_secs
+        data_type: NUMBER
         tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
               tags: ['test_quality']
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
       - name: vm_status
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
+        data_type: VARCHAR
       - name: state_change_hash
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
+        data_type: VARCHAR
       - name: accumulator_root_hash
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
+        data_type: VARCHAR
       - name: event_root_hash
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
+        data_type: VARCHAR
       - name: state_checkpoint_hash
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
+        data_type: VARCHAR
       - name: failed_proposer_indices
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARIANT
-              tags: ['test_integrity']
+        data_type: VARCHAR
+      - name: failed_proposer_indices
+        data_type: VARIANT
       - name: id
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
+        data_type: VARCHAR
       - name: previous_block_votes_bitvec
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARIANT
-              tags: ['test_integrity']
+        data_type: VARIANT
       - name: proposer
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARCHAR
-              tags: ['test_integrity']
+        data_type: VARCHAR
       - name: ROUND
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: NUMBER
-              tags: ['test_integrity']
+        data_type: NUMBER
       - name: data
-        tests:
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: VARIANT
-              tags: ['test_integrity']
+        data_type: VARIANT
       - name: transactions_id
+        data_type: VARCHAR
       - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
       - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
       - name: _invocation_id
+        data_type: VARCHAR

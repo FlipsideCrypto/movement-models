@@ -27,11 +27,8 @@ clean-targets: # directories to be removed by `dbt clean`
   - "dbt_packages"
 
 tests:
-  +store_failures: true # all tests
-  test_quality:
-    +where: "modified_timestamp > dateadd(hour, -{{ var('TEST_HOURS_THRESHOLD', 3) }}, current_timestamp)"
-  test_integrity:
-    +where: "modified_timestamp > dateadd(hour, -{{ var('TEST_HOURS_THRESHOLD', 3) }}, current_timestamp)"
+  +store_failures: true
+  +where: "modified_timestamp > dateadd(hour, -{{ var('TEST_HOURS_THRESHOLD', 3) }}, current_timestamp)"
 
 on-run-start:
   - "{{ create_sps() }}"
@@ -74,6 +71,7 @@ vars:
   OBSERV_FULL_TEST: false
   START_GHA_TASKS: false
   BRONZE_LOOKBACK_DAYS: '{{ env_var("BRONZE_LOOKBACK_DAYS", 3) }}'
+  TEST_HOURS_THRESHOLD: 3
 
 #### STREAMLINE 2.0 BEGIN ####
 
