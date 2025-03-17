@@ -2,6 +2,13 @@ version: 2
 models:
   - name: core__fact_blocks
     description: '{{ doc("core__fact_blocks") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']
     columns:
       - name: block_number
         description: '{{ doc("block_number") }}'  
@@ -24,6 +31,13 @@ models:
 
   - name: core__fact_changes
     description: '{{ doc("core__fact_changes") }}'  
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency'] 
     columns:
       - name: block_number
         description: '{{ doc("block_number") }}'  
@@ -72,7 +86,14 @@ models:
         description: '{{ doc("modified_timestamp") }}'   
 
   - name: core__fact_events
-    description: '{{ doc("core__fact_events") }}'   
+    description: '{{ doc("core__fact_events") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']   
     columns:
       - name: block_number
         description: '{{ doc("block_number") }}'  
@@ -116,7 +137,14 @@ models:
         description: '{{ doc("modified_timestamp") }}'  
 
   - name: core__fact_transactions_block_metadata
-    description: '{{ doc("core__fact_transactions_block_metadata") }}'   
+    description: '{{ doc("core__fact_transactions_block_metadata") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']  
     columns:
       - name: block_number
         description: '{{ doc("block_number") }}'  
@@ -166,7 +194,14 @@ models:
         description: '{{ doc("modified_timestamp") }}'   
 
   - name: core__fact_transactions_state_checkpoint
-    description: '{{ doc("core__fact_transactions_state_checkpoint") }}'   
+    description: '{{ doc("core__fact_transactions_state_checkpoint") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']  
     columns:
       - name: block_number
         description: '{{ doc("block_number") }}'  
@@ -196,7 +231,14 @@ models:
         description: '{{ doc("modified_timestamp") }}'   
 
   - name: core__fact_transactions
-    description: '{{ doc("core__fact_transactions") }}'   
+    description: '{{ doc("core__fact_transactions") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']  
     columns:
       - name: block_number
         description: '{{ doc("block_number") }}'  
