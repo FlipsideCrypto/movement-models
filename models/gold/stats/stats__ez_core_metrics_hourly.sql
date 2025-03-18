@@ -37,4 +37,9 @@ FROM
     ON s.block_timestamp_hour = p.hour
 WHERE
     p.is_native
-    AND p.price IS NOT NULL
+    {% if is_incremental() %}
+        AND s.block_timestamp_hour >= (
+            SELECT 
+                MAX(block_timestamp_hour) 
+            FROM {{ this }})
+    {% endif %}

@@ -1,28 +1,11 @@
 {{ config(
-    materialized = 'incremental',
-    incremental_strategy = 'delete+insert',
-    unique_key = "block_timestamp_hour",
-    cluster_by = ['block_timestamp_hour::DATE'],
+    materialized = 'view',
+    persist_docs ={ "relation": true,
+    "columns": true },
+    meta ={ 'database_tags':{ 'table':{ 'PURPOSE': 'STATS, METRICS, CORE, HOURLY',
+    } } },
     tags = ['noncore']
 ) }}
-
-{% if is_incremental() %}
-    {% set min_block_timestamp_hour_query %}
-        SELECT
-            MIN(DATE_TRUNC('hour', block_timestamp)) as block_timestamp_hour
-        FROM
-            {{ ref('silver__transactions') }}
-        WHERE
-            inserted_timestamp >= (
-                SELECT
-                    MAX(inserted_timestamp)
-                FROM
-                    {{ this }}
-            )
-    {% endset %}
-    
-    {% set min_block_timestamp_hour = run_query(min_block_timestamp_hour_query).columns[0].values()[0] %}
-{% endif %}
 
 SELECT
     DATE_TRUNC(
@@ -67,12 +50,5 @@ WHERE
         'hour',
         CURRENT_TIMESTAMP
     )
-
-{% if is_incremental() %}
-AND DATE_TRUNC(
-    'hour',
-    block_timestamp
-) >= '{{ min_block_timestamp_hour }}'
-{% endif %}
 GROUP BY
     1
