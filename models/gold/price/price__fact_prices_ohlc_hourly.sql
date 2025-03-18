@@ -1,6 +1,9 @@
 {{ config(
-    materialized = 'view',
-    persist_docs ={ "relation": true, "columns": true },
+    materialized = 'incremental',
+    incremental_strategy = 'delete+insert',
+    unique_key = 'fact_prices_ohlc_hourly_id',
+    cluster_by = ['HOUR::DATE'],
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(asset_id, provider)",
     tags = ['noncore']
 ) }}
 

@@ -1,6 +1,8 @@
 {{ config(
-    materialized = 'view',
-    persist_docs ={ "relation": true, "columns": true },
+    materialized = 'incremental',
+    incremental_strategy = 'delete+insert',
+    unique_key = 'dim_asset_metadata_id',
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(token_address, asset_id, symbol, name)",
     tags = ['noncore']
 ) }}
 

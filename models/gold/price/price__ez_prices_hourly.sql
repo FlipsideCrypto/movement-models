@@ -1,6 +1,9 @@
 {{ config(
-    materialized = 'view',
-    persist_docs ={ "relation": true, "columns": true },
+    materialized = 'incremental',
+    incremental_strategy = 'delete+insert',
+    unique_key = 'ez_prices_hourly_id',
+    cluster_by = ['HOUR::DATE','is_native'],
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(token_address, symbol, NAME)",
     tags = ['noncore']
 ) }}
 
