@@ -1,3 +1,8 @@
+{{ config (
+    materialized = 'view',
+    tags = ['noncore']
+) }}
+
 SELECT
     asset_id,
     symbol,
