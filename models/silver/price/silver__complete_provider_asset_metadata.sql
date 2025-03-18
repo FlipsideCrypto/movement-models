@@ -22,15 +22,3 @@ FROM
     {{ ref(
         'bronze__complete_provider_asset_metadata'
     ) }}
-
-{% if is_incremental() %}
-WHERE
-    modified_timestamp >= (
-        SELECT
-            MAX(
-                modified_timestamp
-            )
-        FROM
-            {{ this }}
-    )
-{% endif %}

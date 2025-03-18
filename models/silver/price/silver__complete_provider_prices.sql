@@ -27,18 +27,6 @@ FROM
     m
     ON p.asset_id = m.asset_id
 
-{% if is_incremental() %}
-WHERE
-    p.modified_timestamp >= (
-        SELECT
-            MAX(
-                modified_timestamp
-            )
-        FROM
-            {{ this }}
-    )
-{% endif %}
-
 qualify(ROW_NUMBER() over (PARTITION BY p.asset_id, recorded_hour, p.provider
 ORDER BY
     p.modified_timestamp DESC)) = 1

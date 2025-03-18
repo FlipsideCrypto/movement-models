@@ -25,15 +25,3 @@ FROM
     {{ ref(
         'bronze__complete_native_prices'
     ) }}
-
-{% if is_incremental() %}
-WHERE
-    modified_timestamp >= (
-        SELECT
-            MAX(
-                modified_timestamp
-            )
-        FROM
-            {{ this }}
-    )
-{% endif %}

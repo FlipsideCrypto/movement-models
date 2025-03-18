@@ -7,7 +7,7 @@
 SELECT
     HOUR,
     LOWER(
-        p.token_address
+        token_address
     ) AS token_address,
     asset_id,
     symbol,
@@ -30,16 +30,3 @@ FROM
     {{ ref(
         'bronze__complete_token_prices'
     ) }}
-    p
-
-{% if is_incremental() %}
-WHERE
-    modified_timestamp >= (
-        SELECT
-            MAX(
-                modified_timestamp
-            )
-        FROM
-            {{ this }}
-    )
-{% endif %}
