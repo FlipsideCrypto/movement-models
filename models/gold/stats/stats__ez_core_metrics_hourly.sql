@@ -32,13 +32,12 @@ SELECT
 FROM
     {{ ref('silver_stats__core_metrics_hourly') }}
     s
-    LEFT JOIN {{ ref('price__ez_prices_hourly') }}
+    JOIN {{ ref('price__ez_prices_hourly') }}
     p
     ON s.block_timestamp_hour = p.hour
     AND p.is_native
 WHERE
-    p.price IS NOT NULL
-    AND block_timestamp_hour < DATE_TRUNC('hour', CURRENT_TIMESTAMP)
+    block_timestamp_hour < DATE_TRUNC('hour', CURRENT_TIMESTAMP)
 {% if is_incremental() %}
     AND block_timestamp_hour >= DATEADD('hour', -{{ var('HOURLY_METRICS_LOOKBACK_HOURS', 24) }}, (
         SELECT 
