@@ -59,7 +59,7 @@ AND (
 base_blocks AS (
     SELECT
         block_number,
-        tx_count_from_versions AS transaction_count
+        tx_count AS transaction_count
     FROM
         {{ ref('core__fact_blocks') }}
     WHERE
@@ -75,6 +75,8 @@ base_blocks AS (
             FROM
                 summary_stats
         )
+        AND
+            block_number NOT IN (0, 1758, 1760, 1761, 1762, 1763, 1764, 1766)
 ),
 actual_tx_counts AS (
     SELECT
@@ -95,6 +97,8 @@ actual_tx_counts AS (
             FROM
                 summary_stats
         )
+        AND
+            block_number NOT IN (0, 1758, 1760, 1761, 1762, 1763, 1764, 1766)
     GROUP BY
         block_number
 ),
