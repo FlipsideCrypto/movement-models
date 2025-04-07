@@ -1,0 +1,29 @@
+{{ config(
+    materialized = 'view',
+    persist_docs ={ "relation": true, "columns": true },
+    tags = ['noncore']
+) }}
+
+SELECT
+    LOWER(
+        A.token_address
+    ) AS token_address,
+    asset_id,
+    symbol,
+    NAME,
+    decimals,
+    blockchain,
+    blockchain_name,
+    blockchain_id,
+    is_deprecated,
+    provider,
+    source,
+    _inserted_timestamp,
+    inserted_timestamp,
+    modified_timestamp,
+    complete_token_asset_metadata_id,
+    _invocation_id
+FROM
+    {{ ref(
+        'bronze__complete_token_asset_metadata'
+    ) }} A
