@@ -37,7 +37,8 @@ FROM
     ON s.block_timestamp_hour = p.hour
     AND p.is_native
 WHERE
-    block_timestamp_hour < DATE_TRUNC('hour', CURRENT_TIMESTAMP)
+    p.price IS NOT NULL
+    AND block_timestamp_hour < DATE_TRUNC('hour', CURRENT_TIMESTAMP)
 {% if is_incremental() %}
     AND block_timestamp_hour >= DATEADD('hour', -{{ var('HOURLY_METRICS_LOOKBACK_HOURS', 24) }}, (
         SELECT 
