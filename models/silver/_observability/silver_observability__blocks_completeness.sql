@@ -152,7 +152,8 @@ SELECT
         ORDER BY
             A.block_number
     ) AS blocks_impacted_array,
-    SYSDATE() AS test_timestamp
+    SYSDATE() AS test_timestamp,
+    SYSDATE() AS modified_timestamp
 FROM
     block_gen A
     LEFT JOIN blocks b
