@@ -35,11 +35,11 @@ FROM
     LEFT JOIN {{ ref('price__ez_prices_hourly') }}
     p
     ON s.block_timestamp_hour = p.hour
+    AND p.is_native
 WHERE
-    p.is_native
     {% if is_incremental() %}
-        AND s.block_timestamp_hour >= (
+        s.modified_timestamp >= (
             SELECT 
-                MAX(block_timestamp_hour) 
+                MAX(modified_timestamp) 
             FROM {{ this }})
     {% endif %}
