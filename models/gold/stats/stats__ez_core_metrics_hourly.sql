@@ -37,9 +37,11 @@ FROM
     ON s.block_timestamp_hour = p.hour
     AND p.is_native
 WHERE
-    {% if is_incremental() %}
-        s.modified_timestamp >= (
-            SELECT 
-                MAX(modified_timestamp) 
-            FROM {{ this }})
-    {% endif %}
+    block_timestamp_hour < DATE_TRUNC('hour', CURRENT_TIMESTAMP)
+{% if is_incremental() %}
+    AND block_timestamp_hour >= DATEADD('hour', -{{ var('HOURLY_METRICS_LOOKBACK_HOURS', 24) }}, (
+        SELECT 
+            DATE_TRUNC('hour', MAX(modified_timestamp))
+        FROM {{ this }}
+    ))
+{% endif %}
