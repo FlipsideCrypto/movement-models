@@ -25,7 +25,21 @@ There is more information on how to use dbt docs in the last section of this doc
 - [fact_transactions_block_metadata](#!/model/model.movement_models.core__fact_transactions_block_metadata)
 - [fact_transactions_state_checkpoint](#!/model/model.movement_models.core__fact_transactions_state_checkpoint)
 
-## **Data Model Overview**
+### Price Tables (`movement`.`PRICE`.`<table_name>`)
+
+**Dimension Tables:**
+- [price.dim_asset_metadata](https://flipsidecrypto.github.io/stellar-models/#!/model/model.movement_models.price__dim_asset_metadata)
+
+**Fact Tables:**
+- [price.fact_prices_ohlc_hourly](https://flipsidecrypto.github.io/stellar-models/#!/model/model.movement_models.price__fact_prices_ohlc_hourly)
+
+**Convenience Views:**
+- [price.ez_prices_hourly](https://flipsidecrypto.github.io/stellar-models/#!/model/model.movement_models.price__ez_prices_hourly)
+- [price.ez_asset_metadata](https://flipsidecrypto.github.io/stellar-models/#!/model/model.movement_models.price__ez_asset_metadata)
+
+### Stats Tables (`stellar`.`STATS`.`<table_name>`)
+
+- [stats.ez_core_metrics_hourly](https://flipsidecrypto.github.io/stellar-models/#!/model/model.movement_models.stats__ez_core_metrics_hourly)
 
 The movement models are built a few different ways, but the core fact tables are built using three layers of sql models: **bronze, silver, and gold (or core).**
 
