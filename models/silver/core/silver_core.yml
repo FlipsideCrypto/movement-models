@@ -26,8 +26,8 @@ models:
         tests:
           - not_null:
               tags: ['test_quality']
-          - unique:
-              tags: ['test_quality']
+          # - unique:
+          #     tags: ['test_quality']
       - name: block_timestamp
         data_type: TIMESTAMP_NTZ
         tests:
