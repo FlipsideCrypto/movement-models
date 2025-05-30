@@ -381,7 +381,7 @@ models:
         tests:
           - not_null:
               tags: ['test_quality']
-      - name: fact_transfers_id
+      - name: transfers_id
         data_type: VARCHAR
       - name: inserted_timestamp
         data_type: TIMESTAMP_NTZ
