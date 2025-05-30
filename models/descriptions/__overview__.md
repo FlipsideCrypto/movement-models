@@ -24,6 +24,7 @@ There is more information on how to use dbt docs in the last section of this doc
 - [fact_transactions](#!/model/model.movement_models.core__fact_transactions)
 - [fact_transactions_block_metadata](#!/model/model.movement_models.core__fact_transactions_block_metadata)
 - [fact_transactions_state_checkpoint](#!/model/model.movement_models.core__fact_transactions_state_checkpoint)
+- [fact_transfers](#!/model/model.movement_models.core__fact_transfers)
 
 ### Price Tables (`movement`.`PRICE`.`<table_name>`)
 
@@ -73,8 +74,7 @@ Note that you can also right-click on models to interactively filter and explore
 
 ### **More information**
 - [Flipside](https://flipsidecrypto.xyz/)
-- [Velocity](https://app.flipsidecrypto.com/velocity?nav=Discover)
-- [Tutorials](https://docs.flipsidecrypto.com/our-data/tutorials)
+- [Community](https://docs.flipsidecrypto.xyz/welcome-to-flipside/flipside-community-overview)
 - [Github](https://github.com/FlipsideCrypto/movement-models)
 - [What is dbt?](https://docs.getdbt.com/docs/introduction)
 

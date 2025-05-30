@@ -332,3 +332,60 @@ models:
         data_type: TIMESTAMP_NTZ
       - name: _invocation_id
         data_type: VARCHAR
+
+  - name: silver__transfers
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: block_number
+        data_type: NUMBER
+      - name: block_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: tx_hash
+        data_type: VARCHAR
+      - name: version
+        data_type: NUMBER
+      - name: success
+        data_type: BOOLEAN
+      - name: event_index
+        data_type: NUMBER
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: creation_number
+        data_type: NUMBER
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: transfer_event
+        data_type: VARCHAR
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: account_address
+        data_type: VARCHAR
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: amount
+        data_type: NUMBER
+        tests:
+          - not_null:
+              tags: ['test_quality']
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+              tags: ['test_quality']
+      - name: token_address
+        data_type: VARCHAR
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: fact_transfers_id
+        data_type: VARCHAR
+      - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: _invocation_id
+        data_type: VARCHAR
