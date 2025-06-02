@@ -318,6 +318,10 @@ models:
         description: '{{ doc("amount") }}' 
       - name: TOKEN_ADDRESS
         description: '{{ doc("token_address") }}'      
+      - name: IS_FUNGIBLE
+        description: '{{ doc("is_fungible") }}'   
+      - name: STORE_ADDRESS
+        description: '{{ doc("store_address") }}'   
       - name: FACT_TRANSFERS_ID
         description: '{{ doc("pk") }}' 
       - name: INSERTED_TIMESTAMP
