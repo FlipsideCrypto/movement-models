@@ -486,3 +486,37 @@ models:
         data_type: TIMESTAMP_NTZ
       - name: _invocation_id
         data_type: VARCHAR
+
+  - name: silver__transfers_native
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: block_number
+        data_type: NUMBER
+      - name: block_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: tx_hash
+        data_type: VARCHAR
+      - name: version
+        data_type: NUMBER
+      - name: success
+        data_type: BOOLEAN
+      - name: from_address
+        data_type: VARCHAR
+      - name: to_address
+        data_type: VARCHAR
+      - name: amount
+        data_type: NUMBER
+      - name: token_address
+        data_type: VARCHAR
+      - name: _transfer_key
+        data_type: VARCHAR
+      - name: transfers_native_id
+        data_type: VARCHAR
+      - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: _invocation_id
+        data_type: VARCHAR

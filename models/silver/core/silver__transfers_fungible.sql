@@ -4,10 +4,12 @@
   incremental_strategy = 'merge',
   merge_exclude_columns = ["inserted_timestamp"],
   cluster_by = ['block_timestamp::DATE','modified_timestamp::DATE'],
-  tags = ['core','full_test']
+  tags = ['core']
 ) }}
+
 -- depends_on: {{ ref('core__fact_events') }}
 -- depends_on: {{ ref('silver__fungiblestore_owners') }}
+-- depends_on: {{ ref('silver__fungiblestore_metadata') }}
 
 {% if execute %}
   {% set base_query %}

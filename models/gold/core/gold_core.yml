@@ -1,5 +1,40 @@
 version: 2
 models:
+  - name: core__ez_native_transfers
+    description: '{{ doc("core__ez_native_transfers") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']   
+    columns:
+      - name: block_number
+        description: '{{ doc("block_number") }}'  
+      - name: block_timestamp
+        description: '{{ doc("block_timestamp") }}'   
+      - name: tx_hash
+        description: '{{ doc("tx_hash") }}'   
+      - name: version
+        description: '{{ doc("version") }}'   
+      - name: success
+        description: '{{ doc("success") }}'   
+      - name: from_address  
+        description: '{{ doc("from_address") }}'   
+      - name: to_address
+        description: '{{ doc("to_address") }}'   
+      - name: amount
+        description: '{{ doc("amount") }}'   
+      - name: token_address
+        description: '{{ doc("token_address") }}'   
+      - name: ez_native_transfers_id
+        description: '{{ doc("pk") }}'
+      - name: inserted_timestamp
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: modified_timestamp
+        description: '{{ doc("modified_timestamp") }}'   
+
   - name: core__fact_blocks
     description: '{{ doc("core__fact_blocks") }}' 
     tests:
