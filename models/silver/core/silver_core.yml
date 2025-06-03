@@ -230,6 +230,62 @@ models:
       - name: _invocation_id
         data_type: VARCHAR
 
+  - name: silver__fungiblestore_metadata
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: block_timestamp_first
+        data_type: TIMESTAMP_NTZ
+      - name: block_number_first
+        data_type: NUMBER
+      - name: store_address
+        data_type: VARCHAR
+      - name: metadata_address
+        data_type: VARCHAR
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: fungiblestore_metadata_id
+        data_type: VARCHAR
+      - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: _invocation_id
+        data_type: VARCHAR
+
+  - name: silver__fungiblestore_owners
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: block_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: block_number
+        data_type: NUMBER
+      - name: version
+        data_type: NUMBER
+      - name: tx_hash
+        data_type: VARCHAR
+      - name: change_index
+        data_type: NUMBER
+      - name: store_address
+        data_type: VARCHAR
+      - name: owner_address
+        data_type: VARCHAR
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: fungiblestore_owners_id
+        data_type: VARCHAR
+      - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: _invocation_id
+        data_type: VARCHAR
+        
   - name: silver__transactions
     config:
       contract:
@@ -325,6 +381,139 @@ models:
       - name: data
         data_type: VARIANT
       - name: transactions_id
+        data_type: VARCHAR
+      - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: _invocation_id
+        data_type: VARCHAR
+
+  - name: silver__transfers
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: block_number
+        data_type: NUMBER
+      - name: block_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: tx_hash
+        data_type: VARCHAR
+      - name: version
+        data_type: NUMBER
+      - name: success
+        data_type: BOOLEAN
+      - name: event_index
+        data_type: NUMBER
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: creation_number
+        data_type: NUMBER
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: transfer_event
+        data_type: VARCHAR
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: account_address
+        data_type: VARCHAR
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: amount
+        data_type: NUMBER
+        tests:
+          - not_null:
+              tags: ['test_quality']
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+              tags: ['test_quality']
+      - name: token_address
+        data_type: VARCHAR
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: transfers_id
+        data_type: VARCHAR
+      - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: _invocation_id
+        data_type: VARCHAR
+
+  - name: silver__transfers_fungible
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: block_number
+        data_type: NUMBER
+      - name: block_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: tx_hash
+        data_type: VARCHAR
+      - name: version
+        data_type: NUMBER
+      - name: success
+        data_type: BOOLEAN
+      - name: event_index
+        data_type: NUMBER
+      - name: transfer_event
+        data_type: VARCHAR
+      - name: store_address
+        data_type: VARCHAR
+      - name: owner_address
+        data_type: VARCHAR
+      - name: metadata_address
+        data_type: VARCHAR
+      - name: amount
+        data_type: NUMBER
+      - name: os
+        data_type: VARCHAR
+      - name: om
+        data_type: VARCHAR
+      - name: om_block_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: transfers_fungible_id
+        data_type: VARCHAR
+      - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: _invocation_id
+        data_type: VARCHAR
+
+  - name: silver__transfers_native
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: block_number
+        data_type: NUMBER
+      - name: block_timestamp
+        data_type: TIMESTAMP_NTZ
+      - name: tx_hash
+        data_type: VARCHAR
+      - name: version
+        data_type: NUMBER
+      - name: success
+        data_type: BOOLEAN
+      - name: from_address
+        data_type: VARCHAR
+      - name: to_address
+        data_type: VARCHAR
+      - name: amount
+        data_type: NUMBER
+      - name: token_address
+        data_type: VARCHAR
+      - name: _transfer_key
+        data_type: VARCHAR
+      - name: transfers_native_id
         data_type: VARCHAR
       - name: inserted_timestamp
         data_type: TIMESTAMP_NTZ
