@@ -6,7 +6,8 @@
   merge_exclude_columns = ["inserted_timestamp"],
   cluster_by = ['block_timestamp::DATE'],
   post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(tx_hash, version, from_address, to_address);",
-  tags = ['core']
+  tags = ['core'],
+  enabled = false
 ) }}
 
 SELECT
@@ -15,19 +16,21 @@ SELECT
     tx_hash,
     version,
     success,
-    from_address,
-    to_address,
+    transfer_event,
+    account_address,
     amount,
+    is_fungible,
     token_address,
+    store_address,
     {{ dbt_utils.generate_surrogate_key(
         ['tx_hash','to_address','from_address','block_timestamp::DATE']
-    ) }} AS ez_native_transfers_id,
+    ) }} AS ez_transfers_id,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp,
     '{{ invocation_id }}' AS _invocation_id
 FROM
     {{ ref(
-        'silver__transfers_native'
+        'core__fact_transfers'
     ) }}
 
 {% if is_incremental() %}

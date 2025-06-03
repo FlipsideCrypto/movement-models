@@ -285,6 +285,7 @@ models:
         data_type: TIMESTAMP_NTZ
       - name: _invocation_id
         data_type: VARCHAR
+        
   - name: silver__transactions
     config:
       contract:

@@ -1,7 +1,7 @@
 version: 2
 models:
-  - name: core__ez_native_transfers
-    description: '{{ doc("core__ez_native_transfers") }}' 
+  - name: core__ez_transfers
+    description: '{{ doc("core__ez_transfers") }}' 
     tests:
       - dbt_utils.recency:
           datepart: hour
@@ -19,16 +19,20 @@ models:
       - name: version
         description: '{{ doc("version") }}'   
       - name: success
-        description: '{{ doc("success") }}'   
-      - name: from_address  
-        description: '{{ doc("from_address") }}'   
-      - name: to_address
-        description: '{{ doc("to_address") }}'   
+        description: '{{ doc("success") }}'     
+      - name: transfer_event
+        description: '{{ doc("transfer_event") }}'   
+      - name: account_address  
+        description: '{{ doc("account_address") }}'   
       - name: amount
         description: '{{ doc("amount") }}'   
+      - name: is_fungible
+        description: '{{ doc("is_fungible") }}'     
       - name: token_address
-        description: '{{ doc("token_address") }}'   
-      - name: ez_native_transfers_id
+        description: '{{ doc("token_address") }}' 
+      - name: store_address
+        description: '{{ doc("store_address") }}'   
+      - name: ez_transfers_id
         description: '{{ doc("pk") }}'
       - name: inserted_timestamp
         description: '{{ doc("inserted_timestamp") }}'   
