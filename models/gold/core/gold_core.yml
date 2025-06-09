@@ -1,5 +1,44 @@
 version: 2
 models:
+  - name: core__ez_transfers
+    description: '{{ doc("core__ez_transfers") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']   
+    columns:
+      - name: block_number
+        description: '{{ doc("block_number") }}'  
+      - name: block_timestamp
+        description: '{{ doc("block_timestamp") }}'   
+      - name: tx_hash
+        description: '{{ doc("tx_hash") }}'   
+      - name: version
+        description: '{{ doc("version") }}'   
+      - name: success
+        description: '{{ doc("success") }}'     
+      - name: transfer_event
+        description: '{{ doc("transfer_event") }}'   
+      - name: account_address  
+        description: '{{ doc("account_address") }}'   
+      - name: amount
+        description: '{{ doc("amount") }}'   
+      - name: is_fungible
+        description: '{{ doc("is_fungible") }}'     
+      - name: token_address
+        description: '{{ doc("token_address") }}' 
+      - name: store_address
+        description: '{{ doc("store_address") }}'   
+      - name: ez_transfers_id
+        description: '{{ doc("pk") }}'
+      - name: inserted_timestamp
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: modified_timestamp
+        description: '{{ doc("modified_timestamp") }}'   
+
   - name: core__fact_blocks
     description: '{{ doc("core__fact_blocks") }}' 
     tests:
@@ -281,6 +320,49 @@ models:
         description: '{{ doc("event_root_hash") }}'      
       - name: FACT_TRANSACTIONS_ID
         description: '{{ doc("pk") }}'   
+      - name: INSERTED_TIMESTAMP
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: MODIFIED_TIMESTAMP
+        description: '{{ doc("modified_timestamp") }}'   
+
+  - name: core__fact_transfers
+    description: '{{ doc("core__fact_transfers") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']  
+    columns:
+      - name: BLOCK_NUMBER
+        description: '{{ doc("block_number") }}'  
+      - name: BLOCK_TIMESTAMP
+        description: '{{ doc("block_timestamp") }}'   
+      - name: TX_HASH
+        description: '{{ doc("tx_hash") }}'   
+      - name: VERSION
+        description: '{{ doc("version") }}'   
+      - name: SUCCESS
+        description: '{{ doc("success") }}'   
+      - name: EVENT_INDEX
+        description: '{{ doc("event_index") }}'   
+      - name: CREATION_NUMBER
+        description: '{{ doc("creation_number") }}'  
+      - name: TRANSFER_EVENT
+        description: '{{ doc("transfer_event") }}'   
+      - name: ACCOUNT_ADDRESS
+        description: '{{ doc("address_event") }}'  
+      - name: AMOUNT
+        description: '{{ doc("amount") }}' 
+      - name: TOKEN_ADDRESS
+        description: '{{ doc("token_address") }}'      
+      - name: IS_FUNGIBLE
+        description: '{{ doc("is_fungible") }}'   
+      - name: STORE_ADDRESS
+        description: '{{ doc("store_address") }}'   
+      - name: FACT_TRANSFERS_ID
+        description: '{{ doc("pk") }}' 
       - name: INSERTED_TIMESTAMP
         description: '{{ doc("inserted_timestamp") }}'   
       - name: MODIFIED_TIMESTAMP
