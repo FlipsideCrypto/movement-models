@@ -16,5 +16,5 @@ SELECT
             'Flipside_Crypto/0.1'
         ),
         OBJECT_CONSTRUCT(),
-        'Vault/prod/movement/mainnet_fsc'
+        'Vault/prod/movement/mainnet'
     ) :data :block_height :: INT AS block_number
