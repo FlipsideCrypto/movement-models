@@ -41,7 +41,7 @@ SELECT
             'Flipside_Crypto/0.1'
         ),
         PARSE_JSON('{}'),
-        'Vault/prod/movement/mainnet'
+        'Vault/prod/movement/mainnet_fsc'
     ) AS request
 FROM
     blocks
