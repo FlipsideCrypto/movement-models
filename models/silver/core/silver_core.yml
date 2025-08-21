@@ -521,3 +521,61 @@ models:
         data_type: TIMESTAMP_NTZ
       - name: _invocation_id
         data_type: VARCHAR
+
+  - name: silver__labels
+    description: Address labels and metadata from crosschain source filtered for movement blockchain
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: system_created_at
+        data_type: TIMESTAMP_NTZ
+        description: System timestamp when the label was created
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: insert_date
+        data_type: DATE
+        description: Date when the label was inserted
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: blockchain
+        data_type: VARCHAR
+        description: Blockchain name (movement)
+        tests:
+          - not_null:
+              tags: ['test_quality']
+          - accepted_values:
+              values: ['movement']
+              tags: ['test_quality']
+      - name: address
+        data_type: VARCHAR
+        description: Address being labeled
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: creator
+        data_type: VARCHAR
+        description: Creator of the address/contract
+      - name: label_type
+        data_type: VARCHAR
+        description: Type of label (e.g., cex, dex, defi)
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: label_subtype
+        data_type: VARCHAR
+        description: Subtype of the label for more granular categorization
+      - name: address_name
+        data_type: VARCHAR
+        description: Human-readable name for the address
+      - name: project_name
+        data_type: VARCHAR
+        description: Name of the project associated with the address
+      - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
+        description: Timestamp when the label was last modified
+        tests:
+          - not_null:
+              tags: ['test_quality']

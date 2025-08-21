@@ -1,5 +1,36 @@
 version: 2
 models:
+  - name: core__dim_labels
+    description: '{{ doc("core__dim_labels") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']   
+    columns:
+      - name: blockchain
+        description: '{{ doc("blockchain") }}'  
+      - name: creator
+        description: '{{ doc("creator") }}'   
+      - name: address
+        description: '{{ doc("address") }}'   
+      - name: address_name
+        description: '{{ doc("address_name") }}'   
+      - name: label_type
+        description: '{{ doc("label_type") }}'     
+      - name: label_subtype
+        description: '{{ doc("label_subtype") }}'   
+      - name: project_name  
+        description: '{{ doc("project_name") }}'   
+      - name: dim_labels_id
+        description: '{{ doc("pk") }}'
+      - name: inserted_timestamp
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: modified_timestamp
+        description: '{{ doc("modified_timestamp") }}'   
+
   - name: core__ez_transfers
     description: '{{ doc("core__ez_transfers") }}' 
     tests:

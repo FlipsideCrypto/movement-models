@@ -1,0 +1,54 @@
+version: 2
+models:
+  - name: defi__fact_bridge_activity
+    description: '{{ doc("defi__fact_bridge_activity") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']   
+    columns:
+      - name: block_number
+        description: '{{ doc("block_number") }}'  
+      - name: block_timestamp
+        description: '{{ doc("block_timestamp") }}'   
+      - name: version
+        description: '{{ doc("version") }}'   
+      - name: tx_hash
+        description: '{{ doc("tx_hash") }}'   
+      - name: platform
+        description: '{{ doc("bridge_platform") }}'     
+      - name: bridge_address
+        description: '{{ doc("bridge_address") }}'   
+      - name: event_name  
+        description: '{{ doc("event_name") }}'   
+      - name: direction
+        description: '{{ doc("direction") }}'
+      - name: tx_sender
+        description: '{{ doc("tx_sender") }}'   
+      - name: sender
+        description: '{{ doc("bridge_sender") }}'   
+      - name: receiver
+        description: '{{ doc("bridge_receiver") }}'   
+      - name: source_chain_id
+        description: '{{ doc("source_chain_id") }}'     
+      - name: source_chain_name
+        description: '{{ doc("source_chain") }}'   
+      - name: destination_chain_id  
+        description: '{{ doc("destination_chain_id") }}'   
+      - name: destination_chain_name
+        description: '{{ doc("destination_chain") }}'
+      - name: token_address
+        description: '{{ doc("bridge_token_address") }}'   
+      - name: amount_unadj
+        description: '{{ doc("amount_unadj") }}'   
+      - name: event_index
+        description: '{{ doc("event_index") }}'   
+      - name: fact_bridge_activity_id
+        description: '{{ doc("pk") }}'     
+      - name: inserted_timestamp
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: modified_timestamp  
+        description: '{{ doc("modified_timestamp") }}'   
