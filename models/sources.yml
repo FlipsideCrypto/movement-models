@@ -7,6 +7,7 @@ sources:
       - name: dim_date_hours
       - name: address_tags
       - name: dim_dates
+      - name: dim_labels
   - name: crosschain_silver
     database: "{{ 'crosschain' if target.database == 'MOVEMENT' else 'crosschain_dev' }}"
     schema: silver

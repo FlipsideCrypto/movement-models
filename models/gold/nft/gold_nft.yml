@@ -1,0 +1,95 @@
+version: 2
+models:
+  - name: nft__fact_nft_mints
+    description: '{{ doc("nft__fact_nft_mints") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']   
+    columns:
+      - name: block_timestamp
+        description: '{{ doc("block_timestamp") }}'  
+      - name: block_number
+        description: '{{ doc("block_number") }}'   
+      - name: version
+        description: '{{ doc("version") }}'   
+      - name: tx_hash
+        description: '{{ doc("tx_hash") }}'   
+      - name: event_index
+        description: '{{ doc("event_index") }}'     
+      - name: event_type
+        description: '{{ doc("event_type") }}'   
+      - name: nft_from_address  
+        description: '{{ doc("nft_from_address") }}'   
+      - name: nft_to_address
+        description: '{{ doc("nft_to_address") }}'
+      - name: nft_address
+        description: '{{ doc("nft_address") }}'   
+      - name: token_version
+        description: '{{ doc("token_version") }}'   
+      - name: project_name
+        description: '{{ doc("project_name") }}'   
+      - name: tokenid
+        description: '{{ doc("tokenid") }}'     
+      - name: nft_count
+        description: '{{ doc("nft_count") }}'   
+      - name: total_price_raw  
+        description: '{{ doc("total_price_raw") }}'   
+      - name: currency_address
+        description: '{{ doc("currency_address") }}'
+      - name: fact_nft_mints_id
+        description: '{{ doc("pk") }}'   
+      - name: inserted_timestamp
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: modified_timestamp
+        description: '{{ doc("modified_timestamp") }}'   
+
+  - name: nft__fact_nft_sales
+    description: '{{ doc("nft__fact_nft_sales") }}' 
+    tests:
+      - dbt_utils.recency:
+          datepart: hour
+          field: MODIFIED_TIMESTAMP
+          interval: 3
+          severity: error
+          tags: ['test_recency']   
+    columns:
+      - name: block_timestamp
+        description: '{{ doc("block_timestamp") }}'  
+      - name: block_number
+        description: '{{ doc("block_number") }}'   
+      - name: version
+        description: '{{ doc("version") }}'   
+      - name: tx_hash
+        description: '{{ doc("tx_hash") }}'   
+      - name: event_index
+        description: '{{ doc("event_index") }}'     
+      - name: event_type
+        description: '{{ doc("event_type") }}'   
+      - name: buyer_address  
+        description: '{{ doc("buyer_address") }}'   
+      - name: seller_address
+        description: '{{ doc("seller_address") }}'
+      - name: nft_address
+        description: '{{ doc("nft_address") }}'   
+      - name: token_version
+        description: '{{ doc("token_version") }}'   
+      - name: platform_address
+        description: '{{ doc("platform_address") }}'   
+      - name: project_name
+        description: '{{ doc("project_name") }}'     
+      - name: platform_name
+        description: '{{ doc("platform_name") }}'   
+      - name: platform_exchange_version  
+        description: '{{ doc("platform_exchange_version") }}'   
+      - name: total_price_raw
+        description: '{{ doc("total_price_raw") }}'
+      - name: fact_nft_sales_id
+        description: '{{ doc("pk") }}'   
+      - name: inserted_timestamp
+        description: '{{ doc("inserted_timestamp") }}'   
+      - name: modified_timestamp
+        description: '{{ doc("modified_timestamp") }}'   

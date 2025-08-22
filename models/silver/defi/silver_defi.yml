@@ -1,0 +1,158 @@
+version: 2
+
+models:
+  - name: silver__bridge_layerzero_transfers
+    description: LayerZero bridge transfers and legacy bridge events for cross-chain asset transfers
+    config:
+      contract:
+        enforced: true
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - event_index
+          tags: ['test_quality']
+    columns:
+      - name: block_number
+        data_type: NUMBER
+        description: Block number of the transaction
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: block_timestamp
+        data_type: TIMESTAMP_NTZ
+        description: Timestamp of the block
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: version
+        data_type: NUMBER
+        description: Transaction version number
+        tests:
+          - not_null:
+              tags: ['test_quality']
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+              tags: ['test_quality']
+      - name: tx_hash
+        data_type: VARCHAR
+        description: Transaction hash
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: platform
+        data_type: VARCHAR
+        description: Bridge platform name (layerzero)
+        tests:
+          - not_null:
+              tags: ['test_quality']
+          - accepted_values:
+              values: ['layerzero']
+              tags: ['test_quality']
+      - name: bridge_address
+        data_type: VARCHAR
+        description: Address of the bridge contract
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: event_name
+        data_type: VARCHAR
+        description: Name of the bridge event
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: direction
+        data_type: VARCHAR
+        description: Direction of the bridge transfer (inbound/outbound)
+        tests:
+          - not_null:
+              tags: ['test_quality']
+          - accepted_values:
+              values: ['inbound', 'outbound', 'unknown']
+              tags: ['test_quality']
+      - name: tx_sender
+        data_type: VARCHAR
+        description: Transaction sender address
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: sender
+        data_type: VARCHAR
+        description: Bridge transfer sender address
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: receiver
+        data_type: VARCHAR
+        description: Bridge transfer receiver address
+      - name: source_chain_id
+        data_type: NUMBER
+        description: Source chain ID
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+              tags: ['test_quality']
+      - name: source_chain_name
+        data_type: VARCHAR
+        description: Source chain name
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: destination_chain_id
+        data_type: NUMBER
+        description: Destination chain ID
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+              tags: ['test_quality']
+      - name: destination_chain_name
+        data_type: VARCHAR
+        description: Destination chain name
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: token_address
+        data_type: VARCHAR
+        description: Token contract address
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: amount_unadj
+        data_type: NUMBER
+        description: Unadjusted amount transferred
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+              tags: ['test_quality']
+      - name: event_index
+        data_type: NUMBER
+        description: Index of the event within the transaction
+        tests:
+          - not_null:
+              tags: ['test_quality']
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+              tags: ['test_quality']
+      - name: bridge_layerzero_transfers_id
+        data_type: VARCHAR
+        description: Unique identifier for the bridge transfer record
+        tests:
+          - unique:
+              tags: ['test_quality']
+          - not_null:
+              tags: ['test_quality']
+      - name: inserted_timestamp
+        data_type: TIMESTAMP_NTZ
+        description: Timestamp when the record was inserted
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: modified_timestamp
+        data_type: TIMESTAMP_NTZ
+        description: Timestamp when the record was last modified
+        tests:
+          - not_null:
+              tags: ['test_quality']
+      - name: _invocation_id
+        data_type: VARCHAR
+        description: DBT invocation identifier

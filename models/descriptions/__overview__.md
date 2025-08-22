@@ -17,30 +17,50 @@ There is more information on how to use dbt docs in the last section of this doc
 
 **Click on the links below to jump to the documentation for each schema.**
 
-### Core Fact Tables (`movement`.`CORE`.`<table_name>`)
-- [fact_blocks](#!/model/model.movement_models.core__fact_blocks)
-- [fact_changes](#!/model/model.movement_models.core__fact_changes)
-- [fact_events](#!/model/model.movement_models.core__fact_events)
-- [fact_transactions](#!/model/model.movement_models.core__fact_transactions)
-- [fact_transactions_block_metadata](#!/model/model.movement_models.core__fact_transactions_block_metadata)
-- [fact_transactions_state_checkpoint](#!/model/model.movement_models.core__fact_transactions_state_checkpoint)
-- [fact_transfers](#!/model/model.movement_models.core__fact_transfers)
+### Core Tables (`movement`.`CORE`.`<table_name>`)
+
+**Dimension Tables:**
+- [core.dim_labels](#!/model/model.movement_models.core__dim_labels)
+
+**Fact Tables:**
+- [core.fact_blocks](#!/model/model.movement_models.core__fact_blocks)
+- [core.fact_changes](#!/model/model.movement_models.core__fact_changes)
+- [core.fact_events](#!/model/model.movement_models.core__fact_events)
+- [core.fact_transactions](#!/model/model.movement_models.core__fact_transactions)
+- [core.fact_transactions_block_metadata](#!/model/model.movement_models.core__fact_transactions_block_metadata)
+- [core.fact_transactions_state_checkpoint](#!/model/model.movement_models.core__fact_transactions_state_checkpoint)
+- [core.fact_transfers](#!/model/model.movement_models.core__fact_transfers)
+
+**Convenience Views:**
+- [core.ez_transfers](#!/model/model.movement_models.core__ez_transfers)
 
 ### Price Tables (`movement`.`PRICE`.`<table_name>`)
 
 **Dimension Tables:**
-- [price.dim_asset_metadata](https://flipsidecrypto.github.io/stellar-models/#!/model/model.movement_models.price__dim_asset_metadata)
+- [price.dim_asset_metadata](#!/model/model.movement_models.price__dim_asset_metadata)
 
 **Fact Tables:**
-- [price.fact_prices_ohlc_hourly](https://flipsidecrypto.github.io/stellar-models/#!/model/model.movement_models.price__fact_prices_ohlc_hourly)
+- [price.fact_prices_ohlc_hourly](#!/model/model.movement_models.price__fact_prices_ohlc_hourly)
 
 **Convenience Views:**
-- [price.ez_prices_hourly](https://flipsidecrypto.github.io/stellar-models/#!/model/model.movement_models.price__ez_prices_hourly)
-- [price.ez_asset_metadata](https://flipsidecrypto.github.io/stellar-models/#!/model/model.movement_models.price__ez_asset_metadata)
+- [price.ez_prices_hourly](#!/model/model.movement_models.price__ez_prices_hourly)
+- [price.ez_asset_metadata](#!/model/model.movement_models.price__ez_asset_metadata)
 
-### Stats Tables (`stellar`.`STATS`.`<table_name>`)
+### DeFi Tables (`movement`.`DEFI`.`<table_name>`)
 
-- [stats.ez_core_metrics_hourly](https://flipsidecrypto.github.io/stellar-models/#!/model/model.movement_models.stats__ez_core_metrics_hourly)
+**Fact Tables:**
+- [defi.fact_bridge_activity](#!/model/model.movement_models.defi__fact_bridge_activity)
+
+### NFT Tables (`movement`.`NFT`.`<table_name>`)
+
+**Fact Tables:**
+- [nft.fact_nft_mints](#!/model/model.movement_models.nft__fact_nft_mints)
+- [nft.fact_nft_sales](#!/model/model.movement_models.nft__fact_nft_sales)
+
+### Stats Tables (`movement`.`STATS`.`<table_name>`)
+
+**Convenience Views:**
+- [stats.ez_core_metrics_hourly](#!/model/model.movement_models.stats__ez_core_metrics_hourly)
 
 The movement models are built a few different ways, but the core fact tables are built using three layers of sql models: **bronze, silver, and gold (or core).**
 
