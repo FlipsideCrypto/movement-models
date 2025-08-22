@@ -56,9 +56,9 @@ WITH evnts AS (
         AND success
 
 {% if is_incremental() %}
-AND inserted_timestamp >= (
+AND modified_timestamp >= (
     SELECT
-        MAX(inserted_timestamp)
+        MAX(modified_timestamp)
     FROM
         {{ this }}
 )
@@ -79,9 +79,9 @@ txs AS (
         success
 
 {% if is_incremental() %}
-AND inserted_timestamp >= (
+AND modified_timestamp >= (
     SELECT
-        MAX(inserted_timestamp)
+        MAX(modified_timestamp)
     FROM
         {{ this }}
 )
@@ -112,9 +112,9 @@ chngs AS (
         ) {# AND amount IS NOT NULL #}
 
 {% if is_incremental() %}
-AND inserted_timestamp >= (
+AND modified_timestamp >= (
     SELECT
-        MAX(inserted_timestamp)
+        MAX(modified_timestamp)
     FROM
         {{ this }}
 )

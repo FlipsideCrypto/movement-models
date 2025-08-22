@@ -18,9 +18,9 @@ SELECT
 FROM
     {{ ref('silver__nft_mints_v2') }}
 WHERE
-    _inserted_timestamp > (
+    modified_timestamp > (
         SELECT
-            MAX(_inserted_timestamp) modified_timestamp
+            MAX(modified_timestamp)
         FROM
             {{ this }}
     ) {% endset %}
@@ -39,9 +39,9 @@ WITH base AS (
 
 {% if is_incremental() %}
 WHERE
-    _inserted_timestamp >= (
+    modified_timestamp >= (
         SELECT
-            MAX(_inserted_timestamp)
+            MAX(modified_timestamp)
         FROM
             {{ this }}
     )
@@ -54,9 +54,9 @@ FROM
 
 {% if is_incremental() %}
 WHERE
-    _inserted_timestamp >= (
+    modified_timestamp >= (
         SELECT
-            MAX(_inserted_timestamp)
+            MAX(modified_timestamp)
         FROM
             {{ this }}
     )
@@ -73,9 +73,9 @@ xfers AS (
         success
 
 {% if is_incremental() %}
-AND _inserted_timestamp >= (
+AND modified_timestamp >= (
     SELECT
-        MAX(_inserted_timestamp)
+        MAX(modified_timestamp)
     FROM
         {{ this }}
 )

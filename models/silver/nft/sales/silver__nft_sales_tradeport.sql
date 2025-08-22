@@ -29,7 +29,7 @@ WITH events AS (
                 'AcceptTokenBidEvent'
             ) THEN 'bid_won'
         END AS event_kind,
-        inserted_timestamp
+        modified_timestamp
     FROM
         {{ ref('core__fact_events') }}
     WHERE
@@ -42,10 +42,10 @@ WITH events AS (
         AND success
 
 {% if is_incremental() %}
-AND inserted_timestamp >= GREATEST(
+AND modified_timestamp >= GREATEST(
     (
         SELECT
-            MAX(inserted_timestamp)
+            MAX(modified_timestamp)
         FROM
             {{ this }}
     ),
@@ -68,10 +68,10 @@ chngs AS (
         AND inner_change_type = '0x4::collection::Collection'
 
 {% if is_incremental() %}
-AND inserted_timestamp >= GREATEST(
+AND modified_timestamp >= GREATEST(
     (
         SELECT
-            MAX(inserted_timestamp)
+            MAX(modified_timestamp)
         FROM
             {{ this }}
     ),

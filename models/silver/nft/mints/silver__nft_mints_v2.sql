@@ -17,10 +17,10 @@ SELECT
 FROM
     {{ ref('core__fact_events') }}
 WHERE
-    _inserted_timestamp > GREATEST(
+    modified_timestamp > GREATEST(
         (
             SELECT
-                MAX(_inserted_timestamp)
+                MAX(modified_timestamp)
             FROM
                 {{ this }}
         ),
@@ -47,7 +47,7 @@ WITH evnts AS (
         event_data,
         event_module,
         event_type,
-        inserted_timestamp
+        modified_timestamp
     FROM
         {{ ref('core__fact_events') }}
     WHERE
@@ -57,10 +57,10 @@ WITH evnts AS (
             '0x1::coin::WithdrawEvent'
         )
     {% if is_incremental() %}
-    AND inserted_timestamp >= GREATEST(
+    AND modified_timestamp >= GREATEST(
     (
         SELECT
-            MAX(inserted_timestamp)
+            MAX(modified_timestamp)
         FROM
             {{ this }}
     ),
@@ -87,10 +87,10 @@ chngs AS (
             )
         )
     {% if is_incremental() %}
-    AND inserted_timestamp >= GREATEST(
+    AND modified_timestamp >= GREATEST(
     (
         SELECT
-            MAX(inserted_timestamp)
+            MAX(modified_timestamp)
         FROM
             {{ this }}
     ),
@@ -109,10 +109,10 @@ xfers AS (
     WHERE
         success
     {% if is_incremental() %}
-    AND inserted_timestamp >= GREATEST(
+    AND modified_timestamp >= GREATEST(
         (
             SELECT
-                MAX(inserted_timestamp)
+                MAX(modified_timestamp)
             FROM
                 {{ this }}
         ),
@@ -130,10 +130,10 @@ xfers AS (
     WHERE
         success
     {% if is_incremental() %}
-    AND inserted_timestamp >= GREATEST(
+    AND modified_timestamp >= GREATEST(
     (
         SELECT
-            MAX(inserted_timestamp)
+            MAX(modified_timestamp)
         FROM
             {{ this }}
     ),
