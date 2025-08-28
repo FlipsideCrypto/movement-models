@@ -7,6 +7,8 @@
     tags = ['noncore']
 ) }}
 
+{# TODO -- this model needs to start with block and left join to transactions -- Not every block has a transaction #}
+
 SELECT
     DATE_TRUNC(
         'hour',

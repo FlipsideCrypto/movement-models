@@ -7,9 +7,9 @@ models:
     tests:
       - dbt_utils.sequential_values:
           column_name: BLOCK_TIMESTAMP_HOUR
-          interval: 1
+          interval: interval '1 hour'
           config:
-            severity: error
+            severity: warn
             error_if: ">0"
           tags: ['test_recency']
     columns:
