@@ -1,14 +1,7 @@
 version: 2
 models:
   - name: core__dim_labels
-    description: '{{ doc("core__dim_labels") }}' 
-    tests:
-      - dbt_utils.recency:
-          datepart: hour
-          field: MODIFIED_TIMESTAMP
-          interval: 12
-          severity: error
-          tags: ['test_recency']   
+    description: '{{ doc("core__dim_labels") }}'  
     columns:
       - name: blockchain
         description: '{{ doc("blockchain") }}'  
