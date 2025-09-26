@@ -46,13 +46,13 @@ SELECT
     unique_sender_count,
     unique_payload_function_count,
     total_fees AS total_fees_native,
-    ROUND(
+    COALESCE(ROUND(
         (total_fees / pow(
             10,
             8
         )) * p.price,
         2
-    ) AS total_fees_usd,
+    ), 0) AS total_fees_usd,
     core_metrics_hourly_id AS ez_core_metrics_hourly_id,
     s.inserted_timestamp AS inserted_timestamp,
     s.modified_timestamp AS modified_timestamp
@@ -62,9 +62,9 @@ FROM
     LEFT JOIN {{ ref('price__ez_prices_hourly') }}
     p
     ON s.block_timestamp_hour = p.hour
-    AND p.is_native
 WHERE
-    block_timestamp_hour < DATE_TRUNC('hour', CURRENT_TIMESTAMP)
+    p.is_native
+    AND block_timestamp_hour < DATE_TRUNC('hour', CURRENT_TIMESTAMP)
 {% if is_incremental() %}
 AND
     block_timestamp_hour >= COALESCE(
