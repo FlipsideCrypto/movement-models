@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'incremental',
-    unique_key = ['tx_hash','version','event_index'],
+    unique_key = ['tx_hash','event_index'],
     incremental_strategy = 'merge',
     incremental_predicates = ["dynamic_range_predicate","block_timestamp::DATE"],
     merge_exclude_columns = ['inserted_timestamp'],
