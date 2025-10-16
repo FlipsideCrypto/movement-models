@@ -310,8 +310,7 @@ models:
         tests:
           - not_null:
               tags: ['test_quality']
-          - dbt_utils.expression_is_true:
-              expression: ">= 0"
+          - unique:
               tags: ['test_quality']
       - name: tx_type
         data_type: VARCHAR

@@ -1,16 +1,13 @@
 {{ config(
   materialized = 'incremental',
-  unique_key = ['tx_hash','event_index','block_timestamp::DATE'],
-  incremental_strategy = 'merge',
-  merge_exclude_columns = ["inserted_timestamp"],
+  unique_key = 'version',
+  incremental_strategy = 'delete+insert',
   cluster_by = ['block_timestamp::DATE','modified_timestamp::DATE'],
   tags = ['core']
 ) }}
-
 -- depends_on: {{ ref('core__fact_events') }}
 -- depends_on: {{ ref('silver__fungiblestore_owners') }}
 -- depends_on: {{ ref('silver__fungiblestore_metadata') }}
-
 {% if execute %}
   {% set base_query %}
   CREATE

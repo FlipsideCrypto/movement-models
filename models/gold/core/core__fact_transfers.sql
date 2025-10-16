@@ -1,9 +1,7 @@
 {{ config(
     materialized = 'incremental',
-    unique_key = ['tx_hash','event_index','version','block_timestamp::DATE'],
-    incremental_strategy = 'merge',
-    incremental_predicates = ["dynamic_range_predicate", "block_timestamp::DATE"],
-    merge_exclude_columns = ["inserted_timestamp"],
+    unique_key = 'version',
+    incremental_strategy = 'delete+insert',
     cluster_by = ['block_timestamp::DATE','modified_timestamp::DATE'],
     post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(tx_hash, version, account_address,token_address);",
     tags = ['core']
@@ -43,9 +41,7 @@ AND modified_timestamp >= (
         {{ this }}
 )
 {% endif %}
-
 UNION ALL
-
 SELECT
     block_number,
     block_timestamp,
