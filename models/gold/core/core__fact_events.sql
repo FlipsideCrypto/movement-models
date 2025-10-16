@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'incremental',
-    unique_key = 'tx_hash',
+    unique_key = 'version',
     incremental_strategy = 'delete+insert',
     cluster_by = ['block_timestamp::DATE'],
     post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(version,tx_hash,event_type,event_address,event_module,event_resource,payload_function);",

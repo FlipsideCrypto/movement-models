@@ -1,12 +1,11 @@
 {{ config(
   materialized = 'incremental',
-  unique_key = ['tx_hash','change_index'],
+  unique_key = ['version','change_index'],
   incremental_strategy = 'merge',
   cluster_by = ['block_timestamp::DATE'],
   post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(store_address);",
   tags = ['core']
 ) }}
-
 -- depends_on: {{ ref('core__fact_changes') }}
 
 SELECT

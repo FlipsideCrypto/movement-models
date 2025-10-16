@@ -1,9 +1,7 @@
 {{ config(
   materialized = 'incremental',
-  unique_key = ['tx_hash', 'block_timestamp::DATE'],
-  incremental_strategy = 'merge',
-  incremental_predicates = ["dynamic_range_predicate", "block_timestamp::DATE"],
-  merge_exclude_columns = ['inserted_timestamp'],
+  unique_key = 'version',
+  incremental_strategy = 'delete+insert',
   cluster_by = ['modified_timestamp::DATE'],
   tags = ['core']
 ) }}
@@ -11,7 +9,7 @@
 WITH from_transactions AS (
 
   SELECT
-    value :BLOCK_NUMBER :: bigint AS block_number,
+    VALUE :BLOCK_NUMBER :: bigint AS block_number,
     TO_TIMESTAMP(
       VALUE :BLOCK_TIMESTAMP :: STRING
     ) AS block_timestamp,
@@ -21,23 +19,23 @@ WITH from_transactions AS (
     DATA,
     inserted_timestamp AS file_last_updated
   FROM
-  {% if is_incremental() %}
-    {{ ref('bronze__transactions') }}
-  {% else %}
-    {{ ref('bronze__transactions_FR') }}
+
+{% if is_incremental() %}
+{{ ref('bronze__transactions') }}
+{% else %}
+  {{ ref('bronze__transactions_FR') }}
+{% endif %}
+WHERE
+  version BETWEEN VALUE :FIRST_VERSION :: bigint
+  AND VALUE :LAST_VERSION :: bigint
+
+{% if is_incremental() %}
+AND inserted_timestamp >= (
+  SELECT
+    DATEADD('minute', -5, MAX(modified_timestamp))
+  FROM
+    {{ this }})
   {% endif %}
-
-  WHERE
-    version BETWEEN VALUE :FIRST_VERSION :: bigint
-    AND VALUE :LAST_VERSION :: bigint
-
-  {% if is_incremental() %}
-  AND inserted_timestamp >= (
-    SELECT
-      DATEADD('minute', -5, MAX(modified_timestamp))
-    FROM
-      {{ this }})
-    {% endif %}
 ),
 transformed AS (
   SELECT
@@ -70,7 +68,7 @@ transformed AS (
     DATA :id :: STRING AS id,
     DATA :previous_block_votes_bitvec AS previous_block_votes_bitvec,
     DATA :proposer :: STRING AS proposer,
-    DATA :round :: INT AS round,
+    DATA :round :: INT AS ROUND,
     DATA,
     file_last_updated
   FROM
@@ -111,6 +109,6 @@ SELECT
   SYSDATE() AS modified_timestamp,
   '{{ invocation_id }}' AS _invocation_id
 FROM
-  transformed qualify(ROW_NUMBER() over (PARTITION BY tx_hash
+  transformed qualify(ROW_NUMBER() over (PARTITION BY version
 ORDER BY
   file_last_updated DESC)) = 1
