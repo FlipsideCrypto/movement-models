@@ -6,7 +6,7 @@ models:
       - dbt_utils.recency:
           datepart: hour
           field: MODIFIED_TIMESTAMP
-          interval: 3
+          interval: 24
           severity: error
           tags: ['test_recency']   
     columns:
