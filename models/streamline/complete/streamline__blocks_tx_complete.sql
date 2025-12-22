@@ -32,8 +32,11 @@ WHERE
         FROM
             {{ this }}
     )
+    AND block_number IS NOT NULL
 {% else %}
     {{ ref('bronze__blocks_tx_FR') }}
+WHERE
+    block_number IS NOT NULL
 {% endif %}
 
 qualify(ROW_NUMBER() over (PARTITION BY block_number
