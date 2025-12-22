@@ -46,4 +46,4 @@ SELECT
 FROM
     blocks
 ORDER BY
-    block_number
+    block_number DESC

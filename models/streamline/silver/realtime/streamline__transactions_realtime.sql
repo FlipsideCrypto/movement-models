@@ -109,3 +109,5 @@ numbers AS (
         ) AS request
     FROM
         WORK
+    ORDER BY
+        block_number DESC
