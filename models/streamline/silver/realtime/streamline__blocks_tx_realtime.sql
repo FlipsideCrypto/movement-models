@@ -8,7 +8,7 @@
         "producer_batch_size" :"5000",
         "worker_batch_size" :"5000",
         "sql_source" :"{{this.identifier}}",
-        "order_by_column": "block_number" }
+        "order_by_column": "-block_number" }
     ),
     tags = ['streamline_core_realtime']
 ) }}
@@ -47,3 +47,5 @@ FROM
     blocks
 ORDER BY
     block_number DESC
+LIMIT
+    50000

@@ -9,7 +9,7 @@
         "worker_batch_size" :"5000",
         "sql_source" :"{{this.identifier}}",
         "exploded_key": tojson(["data"]),
-        "order_by_column": "block_number" }
+        "order_by_column": "-block_number" }
     ),
     tags = ['streamline_core_realtime']
 ) }}
@@ -111,3 +111,5 @@ numbers AS (
         WORK
     ORDER BY
         block_number DESC
+    LIMIT
+        50000
