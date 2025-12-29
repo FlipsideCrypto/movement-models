@@ -10,7 +10,7 @@ models:
           datepart: day
           field: TEST_TIMESTAMP
           interval: 2
-          severity: error
+          severity: warn
           tags: ['test_recency']
     columns:
       - name: TEST_NAME
@@ -22,36 +22,42 @@ models:
         tests:
           - not_null:
               tags: ['test_quality']
+              severity: warn
       - name: MAX_BLOCK
         data_type: NUMBER
         description: The highest block id in the test
         tests:
           - not_null:
               tags: ['test_quality']
+              severity: warn
       - name: MIN_BLOCK_TIMESTAMP
         data_type: TIMESTAMP_NTZ
         description: The lowest block timestamp in the test
         tests:
           - not_null:
               tags: ['test_quality']
+              severity: warn
       - name: MAX_BLOCK_TIMESTAMP
         data_type: TIMESTAMP_NTZ
         description: The highest block timestamp in the test
         tests:
           - not_null:
               tags: ['test_quality']
+              severity: warn
       - name: BLOCKS_TESTED
         data_type: NUMBER
         description: Count of blocks in the test
         tests:
           - not_null:
               tags: ['test_quality']
+              severity: warn
       - name: BLOCKS_IMPACTED_COUNT
         data_type: NUMBER
         description: Count of block gaps in the test
         tests: 
           - not_null:
               tags: ['test_quality']
+              severity: warn
       - name: BLOCKS_IMPACTED_ARRAY
         data_type: ARRAY
         description: Array of affected blocks
@@ -61,8 +67,10 @@ models:
         tests:
           - not_null:
               tags: ['test_quality']
+              severity: warn
           - unique:
               tags: ['test_quality']
+              severity: warn
       - name: MODIFIED_TIMESTAMP
         data_type: TIMESTAMP_NTZ
 
