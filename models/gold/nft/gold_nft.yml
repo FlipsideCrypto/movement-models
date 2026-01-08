@@ -4,9 +4,9 @@ models:
     description: '{{ doc("nft__fact_nft_mints") }}' 
     tests:
       - dbt_utils.recency:
-          datepart: hour
+          datepart: day
           field: MODIFIED_TIMESTAMP
-          interval: 12
+          interval: 7
           severity: error
           tags: ['test_recency']   
     columns:
